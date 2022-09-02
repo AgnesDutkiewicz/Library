@@ -23,9 +23,9 @@ describe 'Creating new book' do
   it "does not save the book if it's invalid" do
     visit new_book_url
 
-    expect {
+    expect do
       click_button 'Create Book'
-    }.not_to change(Book, :count)
+    end.not_to change(Book, :count)
 
     expect(current_path).to eq(books_path)
   end
