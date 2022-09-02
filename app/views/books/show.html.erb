@@ -14,3 +14,4 @@
 </p>
 
 <%= link_to "Edit", edit_book_path %>
+<%= link_to "Delete", book_path(@book), method: :delete, data: {confirm: 'Are you sure?'} %>

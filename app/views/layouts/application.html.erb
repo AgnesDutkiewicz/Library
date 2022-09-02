@@ -11,11 +11,7 @@
   </head>
 
   <body>
-  <% if flash[:notice] %>
-  <p>
-    <%= flash[:notice] %>
-  </p>
-    <% end %>
+  <%= render 'layouts/flashes' %>>
   <li>
     <%= render 'layouts/menu' %>
   </li>
