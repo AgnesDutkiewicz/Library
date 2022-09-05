@@ -1,0 +1,10 @@
+<%= link_to "Add New Publisher", new_publisher_path %>
+
+<h1>Publishers</h1>
+<p>Publishers: <%= @publishers.count %> </p>
+
+<% @publishers.each do |publisher| %>
+  <p>
+    <%= link_to publisher.name, publisher %>
+  </p>
+<% end %>

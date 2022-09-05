@@ -1,0 +1,16 @@
+<h1> <%= @publisher.name %> </h1>
+
+<p>
+  Origin country:
+  <%= @publisher.origin %>
+</p>
+<p>
+  Publisher books:
+</p>
+<p>
+  <% @publisher.books.each do |book| %>
+    <%= link_to book.title, book_path(book) %>
+    <% end %>
+</p>
+
+<%= link_to "Edit", edit_publisher_path %>
