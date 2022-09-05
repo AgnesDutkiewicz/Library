@@ -6,7 +6,7 @@
 </p>
 <p>
   Publisher:
-  <%= @book.publisher %>
+  <%= link_to @book.publisher.name, publisher_path(@book.publisher) %>
 </p>
 <p>
   Publication date:
