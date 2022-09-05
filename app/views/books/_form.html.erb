@@ -1,5 +1,7 @@
 <%= form_for(@book) do |f| %>
 
+  <%= render 'errors' %>
+
   <p>
     <%= f.label :title %><br/>
     <%= f.text_field :title, autofocus: true %>
