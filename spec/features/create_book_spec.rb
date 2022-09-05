@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 describe 'Creating new book' do
+  let!(:publisher1) { create :publisher }
+
   it "saves the book and shows the new book's details" do
     visit books_url
 
@@ -11,7 +13,7 @@ describe 'Creating new book' do
     fill_in 'Title', with: 'New Book Title'
     select (Time.now.year - 1), from: 'book_publication_date_1i'
     fill_in 'Author', with: 'This Great Author'
-    fill_in 'Publisher', with: 'Some Publisher'
+    select publisher1.name, from: 'book_publisher_id'
 
     click_button 'Create Book'
 

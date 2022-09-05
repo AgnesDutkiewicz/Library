@@ -9,7 +9,7 @@ describe 'Books#show' do
 
     expect(page).to have_text(book1.title)
     expect(page).to have_text(book1.author)
-    expect(page).to have_text(book1.publisher)
+    expect(page).to have_text(book1.publisher_id)
     expect(page).to have_text(book1.publication_date)
     expect(page).to_not have_text(book2.title)
   end

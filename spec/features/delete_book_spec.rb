@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'Deleting a book' do
   let!(:book) { create :book }
 
-  it 'destroys the book and shows the book#ndex page without the deleted book' do
+  it 'destroys the book and shows the book#index page without the deleted book' do
     visit book_path(book)
 
     click_link 'Delete'

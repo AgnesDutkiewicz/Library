@@ -11,7 +11,7 @@
 
   <p>
     <%= f.label :publisher %><br/>
-    <%= f.text_field :publisher %>
+    <%= f.collection_select :publisher_id, Publisher.order(:name), :id, :name %>
   </p>
 
   <p>

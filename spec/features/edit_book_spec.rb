@@ -19,7 +19,7 @@ describe 'Editing book' do
     expect(page).to have_text('Book successfully updated!')
   end
 
-  it "does not update the movie if it's invalid" do
+  it "does not update the book if it's invalid" do
     visit edit_book_url(book)
 
     fill_in 'Title', with: ''
