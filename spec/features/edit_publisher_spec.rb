@@ -29,5 +29,6 @@ describe 'Editing publisher' do
     click_button 'Update Publisher'
 
     expect(page).to have_text('Editing publisher:')
+    expect(page).to have_text('error')
   end
 end

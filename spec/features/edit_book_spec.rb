@@ -27,5 +27,6 @@ describe 'Editing book' do
     click_button 'Update Book'
 
     expect(page).to have_text('Editing book:')
+    expect(page).to have_text('error')
   end
 end

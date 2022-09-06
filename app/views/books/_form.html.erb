@@ -1,6 +1,6 @@
 <%= form_for(@book) do |f| %>
 
-  <%= render 'errors' %>
+  <%= render 'shared/errors', object: @book %>
 
   <p>
     <%= f.label :title %><br/>
