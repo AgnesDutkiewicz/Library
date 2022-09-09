@@ -1,8 +1,10 @@
 <h1> <%= @book.title %> </h1>
 
 <p>
-  Author:
-  <%= @book.author %>
+  <%= "Author".pluralize(@authors.size) %>:
+  <% @authors.each do |author| %>
+  <%= link_to author.name, author_path(author) %>
+    <% end %>
 </p>
 <p>
   Publisher:
@@ -10,7 +12,7 @@
 </p>
 <p>
   Publication date:
-  <%= @book.publication_date %>
+  <%= @book.publication_date.strftime('%d-%m-%Y') %>, (<%= time_ago_in_words(@book.publication_date) %> ago)
 </p>
 
 <%= link_to "Edit", edit_book_path %>

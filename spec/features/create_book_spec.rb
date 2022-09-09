@@ -1,7 +1,10 @@
 require 'rails_helper'
 
 describe 'Creating new book' do
+
+  context
   let!(:publisher1) { create :publisher }
+  let!(:author) { create :author }
 
   it "saves the book and shows the new book's details" do
     visit books_url
@@ -12,13 +15,14 @@ describe 'Creating new book' do
 
     fill_in 'Title', with: 'New Book Title'
     select (Time.now.year - 1), from: 'book_publication_date_1i'
-    fill_in 'Author', with: 'This Great Author'
+    check 'John Tolkien'
     select publisher1.name, from: 'book_publisher_id'
 
     click_button 'Create Book'
 
     expect(current_path).to eq(book_path(Book.last))
     expect(page).to have_text('New Book Title')
+    expect(page).to have_text('John Tolkien')
     expect(page).to have_text('Book successfully created!')
   end
 

@@ -5,6 +5,7 @@ class BooksController < ApplicationController
 
   def show
     @book = Book.find(params[:id])
+    @authors = @book.authors
   end
 
   def new
@@ -35,6 +36,8 @@ class BooksController < ApplicationController
 
   def destroy
     @book = Book.find(params[:id])
+    associations = @book.author_books
+    associations.destroy
     @book.destroy
     redirect_to books_url, alert: 'Book successfully deleted!'
   end
@@ -42,6 +45,6 @@ class BooksController < ApplicationController
   private
 
   def book_params
-    params.require(:book).permit(:title, :author, :publisher_id, :publication_date)
+    params.require(:book).permit(:title, :publisher_id, :publication_date, author_ids: [])
   end
 end

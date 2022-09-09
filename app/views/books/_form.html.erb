@@ -7,8 +7,8 @@
     <%= f.text_field :title, autofocus: true %>
   </p>
   <p>
-    <%= f.label :author %><br/>
-    <%= f.text_field :author %>
+    <%= f.label :authors %><br/>
+    <%= f.collection_check_boxes(:author_ids, Author.all.order(:name), :id, :name) %>
   </p>
 
   <p>
