@@ -1,0 +1,15 @@
+<%= form_for(@author) do |f| %>
+
+  <%= render 'shared/errors', object: @author %>
+
+  <p>
+    <%= f.label :name %><br/>
+    <%= f.text_field :name, autofocus: true %>
+  </p>
+  <p>
+    <%= f.label :birth_year %><br/>
+    <%= f.number_field :birth_year %>
+  </p>
+
+  <%= f.submit %>
+<% end %>

@@ -3,4 +3,5 @@ Rails.application.routes.draw do
 
   resources :books
   resources :publishers, except: [:destroy]
+  resources :authors, except: [:destroy]
 end

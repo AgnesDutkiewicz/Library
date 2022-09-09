@@ -1,0 +1,14 @@
+<h1> <%= @author.name %> </h1>
+
+<p>
+  Birth year:
+  <%= @author.birth_year %>
+</p>
+<!--<p>-->
+<!--  <%#= "Book".pluralize(@books.size) %>:</br>-->
+<%# @books.each do |book| %>
+<!--<%#= link_to book.title, book_path(book) %></br>-->
+<%# end %>
+<!--    </p>-->
+
+<%= link_to "Edit", edit_author_path %>
