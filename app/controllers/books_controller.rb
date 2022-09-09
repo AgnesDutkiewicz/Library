@@ -36,8 +36,6 @@ class BooksController < ApplicationController
 
   def destroy
     @book = Book.find(params[:id])
-    associations = @book.author_books
-    associations.destroy
     @book.destroy
     redirect_to books_url, alert: 'Book successfully deleted!'
   end
