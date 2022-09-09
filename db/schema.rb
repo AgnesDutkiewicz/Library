@@ -12,6 +12,15 @@
 
 ActiveRecord::Schema.define(version: 2022_09_07_155202) do
 
+  create_table "author_books", force: :cascade do |t|
+    t.integer "author_id"
+    t.integer "book_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["author_id"], name: "index_author_books_on_author_id"
+    t.index ["book_id"], name: "index_author_books_on_book_id"
+  end
+
   create_table "authors", force: :cascade do |t|
     t.string "name", null: false
     t.integer "birth_year"
@@ -25,7 +34,6 @@ ActiveRecord::Schema.define(version: 2022_09_07_155202) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "publisher_id"
-    t.string "author"
     t.index ["publisher_id"], name: "index_books_on_publisher_id"
   end
 
@@ -36,5 +44,7 @@ ActiveRecord::Schema.define(version: 2022_09_07_155202) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "author_books", "authors"
+  add_foreign_key "author_books", "books"
   add_foreign_key "books", "publishers"
 end

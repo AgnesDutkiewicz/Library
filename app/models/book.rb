@@ -1,5 +1,7 @@
 class Book < ApplicationRecord
   belongs_to :publisher
+  has_many :author_books
+  has_many :authors, through: :author_books
 
-  validates :title, :author, presence: true
+  validates :title, presence: true
 end
