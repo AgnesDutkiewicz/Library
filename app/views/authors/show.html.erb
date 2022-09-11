@@ -4,11 +4,14 @@
   Birth year:
   <%= @author.birth_year %>
 </p>
-<!--<p>-->
-<!--  <%#= "Book".pluralize(@books.size) %>:</br>-->
-<%# @books.each do |book| %>
-<!--<%#= link_to book.title, book_path(book) %></br>-->
-<%# end %>
-<!--    </p>-->
+<p>
+  <%= "Book".pluralize(@books.size) %>:
+</p>
+<% @books.each do |book| %>
+  <p>
+    <%= link_to book.title, book_path(book) %>
+  </p>
+<% end %>
+
 
 <%= link_to "Edit", edit_author_path %>

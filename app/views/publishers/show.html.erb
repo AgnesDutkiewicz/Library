@@ -7,10 +7,11 @@
 <p>
   Publisher books:
 </p>
-<p>
-  <% @publisher.books.each do |book| %>
+
+<% @publisher.books.each do |book| %>
+  <p>
     <%= link_to book.title, book_path(book) %>
-    <% end %>
-</p>
+  </p>
+<% end %>
 
 <%= link_to "Edit", edit_publisher_path %>
