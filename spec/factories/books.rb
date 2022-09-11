@@ -2,7 +2,19 @@ FactoryBot.define do
   factory :book do
     title { 'Lord of the Rings' }
     publication_date { '1981-01-01' }
-    author { 'J. R. R. Tolkien' }
     association :publisher, factory: :publisher
+  end
+
+  factory :author do
+    name { 'John Tolkien' }
+    birth_year { 1892 }
+  end
+
+  factory :book_with_author, parent: :book do
+    authors { [FactoryBot.create(:author)] }
+  end
+
+  factory :book_with_author2, parent: :book do
+    authors { [FactoryBot.create(:author, name: 'Joanne Rowling')] }
   end
 end
