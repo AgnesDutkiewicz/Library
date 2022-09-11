@@ -1,4 +1,6 @@
 class AuthorsController < ApplicationController
+  before_action :require_sign_in, except: [:index, :show]
+
   def index
     @authors = Author.all
   end
