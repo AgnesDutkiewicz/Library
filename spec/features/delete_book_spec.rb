@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe 'Deleting a book' do
-  let!(:book) { create :book }
+  let!(:book) { create :book_with_author }
 
-  it 'destroys the book and shows the book#index page without the deleted book' do
+  it 'successfully destroys the book and shows the book#index page without the deleted book' do
     visit book_path(book)
 
     click_link 'Delete'

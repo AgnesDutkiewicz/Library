@@ -39,7 +39,7 @@ describe 'Editing author' do
     end
   end
 
-  context 'when name is changed to blank ' do
+  context 'when name is changed to blank' do
     it 'fails to update author' do
       visit edit_author_url(author)
 
@@ -48,6 +48,7 @@ describe 'Editing author' do
       click_button 'Update Author'
 
       expect(page).to have_text('Editing author:')
+      expect(current_path).to eq(author_path(author))
       expect(page).to have_text('error')
     end
   end

@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :publisher do
-    name { 'PWN' }
-    origin { 'Poland' }
+    name { 'Allen & Unwin' }
+    origin { 'Australia' }
   end
 end

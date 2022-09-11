@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'Author#index' do
-  context 'when there is 1 author in database' do
+  context 'when there is one author in database' do
     let!(:author1) { create :author }
 
     it "lists author's name" do
@@ -11,7 +11,7 @@ describe 'Author#index' do
     end
   end
 
-  context 'when there are 3 authors in database' do
+  context 'when there is more than one authors in database' do
     let!(:author1) { create :author }
     let!(:author2) { create :author, name: 'Trudi Canavan' }
     let!(:author3) { create :author, name: 'Anne Bishop' }
