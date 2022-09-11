@@ -1,4 +1,6 @@
-<%= link_to "Add New Publisher", new_publisher_path %>
+<% if current_user_admin? %>
+  <%= link_to "Add New Publisher", new_publisher_path %>
+<% end %>
 
 <h1>Publishers</h1>
 <p>Publishers: <%= @publishers.count %> </p>

@@ -1,4 +1,6 @@
-<%= link_to "Add New Book", new_book_path %>
+<% if current_user_admin? %>
+  <%= link_to "Add New Book", new_book_path %>
+<% end %>
 
 <h1>Books</h1>
 <p>Available books: <%= @books.length %> </p>

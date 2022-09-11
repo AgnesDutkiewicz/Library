@@ -3,8 +3,8 @@
 <p>
   <%= "Author".pluralize(@authors.size) %>:
   <% @authors.each do |author| %>
-  <%= link_to author.name, author_path(author) %>
-    <% end %>
+    <%= link_to author.name, author_path(author) %>
+  <% end %>
 </p>
 <p>
   Publisher:
@@ -15,5 +15,7 @@
   <%= @book.publication_date.strftime('%d-%m-%Y') %>, (<%= time_ago_in_words(@book.publication_date) %> ago)
 </p>
 
-<%= link_to "Edit", edit_book_path %>
-<%= link_to "Delete", book_path(@book), method: :delete, data: {confirm: 'Are you sure?'} %>
+<% if current_user_admin? %>
+  <%= link_to "Edit", edit_book_path %>
+  <%= link_to "Delete", book_path(@book), method: :delete, data: { confirm: 'Are you sure?' } %>
+<% end %>

@@ -1,4 +1,6 @@
-<%= link_to "Add New Author", new_author_path %>
+<% if current_user_admin? %>
+  <%= link_to "Add New Author", new_author_path %>
+<% end %>
 
 <h1>Authors</h1>
 <p>Authors: <%= @authors.count %> </p>
