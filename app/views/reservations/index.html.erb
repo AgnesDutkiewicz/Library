@@ -1,0 +1,8 @@
+<h1>Reservations</h1>
+<p>Current reservations: <%= @reservations.count %> </p>
+
+<% @reservations.each do |reservation| %>
+  <p>
+    <%= link_to reservation.book.title, reservation %>
+  </p>
+<% end %>
