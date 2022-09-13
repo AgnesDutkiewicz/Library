@@ -8,6 +8,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @reservations = @user.reservations.where(status_up: true)
   end
 
   def new
@@ -44,7 +45,7 @@ class UsersController < ApplicationController
 
   def require_correct_user
     @user = User.find(params[:id])
-    redirect_to root_url unless current_user?
+    redirect_to root_url unless current_user?(@user)
   end
 
   def user_params

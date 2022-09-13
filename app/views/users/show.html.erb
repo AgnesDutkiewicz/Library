@@ -1,12 +1,29 @@
 <header>
   <h3><%= @user.name %></h3>
-  <h4><%= @user.email %></h4>
+  <p><%= @user.email %></p>
 </header>
+
+<p>
+  <% if current_user?(@user) or current_user_admin? %>
+    <% if @reservations.any? %>
+    <p>
+      Reserved books:
+    </p>
+    <% @reservations.each do |reservation| %>
+      <p>
+        <%= link_to reservation.book.title, book_path(reservation.book) %>
+      </p>
+    <% end %>
+  <% else %>
+    <%= content_tag(:strong, 'No reserved books') %>
+  <% end %>
+<% end %>
+
 
 <p>
   <% if current_user?(@user) %>
     <%= link_to "Edit Account", edit_user_path(@user) %>
-    <%= link_to "Delete", user_path(@user), method: :delete, data: { confirm: 'Are you sure?' } %>
+    <%= link_to "Delete Account", user_path(@user), method: :delete, data: { confirm: 'Are you sure?' } %>
   <% end %>
 </p>
 

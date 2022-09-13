@@ -9,6 +9,7 @@ class BooksController < ApplicationController
   def show
     @book = Book.find(params[:id])
     @authors = @book.authors
+    @current_reservation = @book.reservations.find_by(status_up: true) if current_user
   end
 
   def new

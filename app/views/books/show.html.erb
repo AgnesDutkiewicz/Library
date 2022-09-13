@@ -15,7 +15,20 @@
   <%= @book.publication_date.strftime('%d-%m-%Y') %>, (<%= time_ago_in_words(@book.publication_date) %> ago)
 </p>
 
+<% if current_user %>
+  <% if @current_reservation %>
+    <p><%= "Book is reserved until #{@current_reservation.date_of_return.strftime('%d-%m-%Y')}" %></p>
+    <% if current_user_admin? %>
+      <%= button_to "Cancel Reservation", book_reservation_path(@book, @current_reservation), method: :delete %>
+    <% end %>
+  <% else %>
+    <%= button_to "Make Reservation", book_reservations_path(@book) %>
+  <% end %>
+<% end %>
+
 <% if current_user_admin? %>
-  <%= link_to "Edit", edit_book_path %>
-  <%= link_to "Delete", book_path(@book), method: :delete, data: { confirm: 'Are you sure?' } %>
+  <p>
+    <%= link_to "Edit Book", edit_book_path(@book) %>
+    <%= link_to "Delete Book", book_path(@book), method: :delete, data: { confirm: 'Are you sure?' } %>
+  </p>
 <% end %>
