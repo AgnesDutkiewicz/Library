@@ -6,8 +6,4 @@ class Book < ApplicationRecord
   has_many :users, through: :reservations
 
   validates :title, :authors, presence: true
-
-  # def current_reservation
-  #   self.reservation.where(status_up: true)
-  # end
 end

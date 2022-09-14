@@ -19,7 +19,7 @@
   <% if @current_reservation %>
     <p><%= "Book is reserved until #{@current_reservation.date_of_return.strftime('%d-%m-%Y')}" %></p>
     <% if current_user_admin? %>
-      <%= button_to "Cancel Reservation", book_reservation_path(@book, @current_reservation), method: :delete %>
+      <%= button_to "Cancel Reservation", book_reservation_path(@book, @current_reservation), method: :patch %>
     <% end %>
   <% else %>
     <%= button_to "Make Reservation", book_reservations_path(@book) %>

@@ -16,7 +16,7 @@ class ReservationsController < ApplicationController
     redirect_to user_path(current_user), notice: 'Book reserved!'
   end
 
-  def destroy
+  def update
     reservation = Reservation.find(params[:id])
     reservation.status_up = false
     reservation.save
