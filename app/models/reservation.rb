@@ -13,7 +13,7 @@ class Reservation < ApplicationRecord
     7
   end
 
-  def date_of_return
+  def return_date
     created_at + booking_duration.days
   end
 end

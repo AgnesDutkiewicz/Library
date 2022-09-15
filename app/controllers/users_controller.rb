@@ -8,7 +8,9 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @reservations = @user.reservations.where(status_up: true)
+    @reservations = @user.reservations.status_reserved
+    @borrowed_books = @user.reservations.status_borrowed
+    @lost_books = @user.reservations.status_lost
   end
 
   def new

@@ -9,7 +9,13 @@ class BooksController < ApplicationController
   def show
     @book = Book.find(params[:id])
     @authors = @book.authors
-    @current_reservation = @book.reservations.find_by(status_up: true) if current_user
+    if current_user
+      if @book.reservations.status_reserved.first
+        @current_reservation = @book.reservations.status_reserved.first
+      elsif @book.reservations.status_borrowed.first
+        @current_reservation = @book.reservations.status_borrowed.first
+      end
+    end
   end
 
   def new

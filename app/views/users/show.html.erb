@@ -17,8 +17,31 @@
   <% else %>
     <%= content_tag(:strong, 'No reserved books') %>
   <% end %>
-<% end %>
 
+  <% if @borrowed_books.any? %>
+    <p>
+      Borrowed books:
+    </p>
+    <% @borrowed_books.each do |reservation| %>
+      <p>
+        <%= link_to reservation.book.title, book_path(reservation.book) %>
+      </p>
+    <% end %>
+  <% else %>
+    <%= content_tag(:strong, 'No borrowed books') %>
+  <% end %>
+
+  <% if @lost_books.any? %>
+    <p>
+      Lost books:
+    </p>
+    <% @lost_books.each do |reservation| %>
+      <p>
+        <%= link_to reservation.book.title, book_path(reservation.book) %>
+      </p>
+    <% end %>
+  <% end %>
+<% end %>
 
 <p>
   <% if current_user?(@user) %>
@@ -26,4 +49,3 @@
     <%= link_to "Delete Account", user_path(@user), method: :delete, data: { confirm: 'Are you sure?' } %>
   <% end %>
 </p>
-
