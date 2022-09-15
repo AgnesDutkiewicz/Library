@@ -2,9 +2,9 @@ require 'dry-validation'
 
 class UpdateContract < Dry::Validation::Contract
   params do
-    required(:name).value(:string)
+    required(:name).filled(:string)
     required(:email).filled(:string)
-    required(:password_digest).value(:string)
+    required(:password_digest).filled(:string)
     required(:admin).value(:bool)
   end
 

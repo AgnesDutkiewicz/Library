@@ -2,9 +2,9 @@ require 'dry-validation'
 
 class CreateContract < Dry::Validation::Contract
   params do
-    required(:title).value(:string)
+    required(:title).filled(:string)
     optional(:publication_date).value(:date)
-    required(:author_ids).value(:array)
+    required(:author_ids).filled(:array)
     required(:publisher_id).value(:integer)
   end
 end

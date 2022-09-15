@@ -2,7 +2,7 @@ require 'dry-validation'
 
 class CreateContract < Dry::Validation::Contract
   params do
-    required(:name).value(:string)
+    required(:name).filled(:string)
     optional(:origin).value(:string)
   end
 end
