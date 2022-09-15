@@ -12,8 +12,14 @@ class ReservationsController < ApplicationController
   end
 
   def create
-    @book.reservations.create!(user: current_user)
-    redirect_to user_path(current_user), notice: 'Book reserved!'
+    contract = CreateContract.new
+    result = contract.call(reservation_params)
+    if result.success?
+      @book.reservations.create!(user: current_user)
+      redirect_to user_path(current_user), notice: 'Book reserved!'
+    else
+      result.errors.to_h
+    end
   end
 
   def edit
