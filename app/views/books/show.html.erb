@@ -22,8 +22,8 @@
       <%= button_to "Change Reservation", edit_book_reservation_path(@book, @current_reservation), method: :get %>
     <% end %>
   <% elsif @book.reservations.status_lost %>
-    <%= "Book is lost" %>
-  <% else %>
+<%= "Book is lost" %>
+    <% else %>
     <%= button_to "Make Reservation", book_reservations_path(@book) %>
   <% end %>
 <% end %>
