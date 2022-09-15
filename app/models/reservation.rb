@@ -2,7 +2,12 @@ class Reservation < ApplicationRecord
   belongs_to :book
   belongs_to :user
 
-  # validates_uniqueness_of :status_up, conditions: -> { where false }
+  enum status: {
+    reserved: 0,
+    borrowed: 1,
+    returned: 2,
+    lost: 3
+  }, _prefix: true
 
   def booking_duration
     7
