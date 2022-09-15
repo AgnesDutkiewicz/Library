@@ -14,6 +14,8 @@ class BooksController < ApplicationController
         @current_reservation = @book.reservations.status_reserved.first
       elsif @book.reservations.status_borrowed.first
         @current_reservation = @book.reservations.status_borrowed.first
+      elsif @book.reservations.status_lost.first
+        @book_lost = true
       end
     end
   end

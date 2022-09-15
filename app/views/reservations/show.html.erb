@@ -7,3 +7,5 @@
   Book status:
     <%= @reservation.status %>
 </p>
+
+<%= button_to "Change Reservation", edit_book_reservation_path(@reservation.book, @reservation), method: :get %>
