@@ -1,7 +1,5 @@
-require 'dry-validation'
-
 module Authors
-  class UpdateContract < Dry::Validation::Contract
+  class UpdateContract < Contract
     params do
       required(:name).filled(:string)
       optional(:birth_year).value(:integer)

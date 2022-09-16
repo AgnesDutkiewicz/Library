@@ -1,7 +1,5 @@
-require 'dry-validation'
-
 module Users
-  class UpdateContract < Dry::Validation::Contract
+  class UpdateContract < Contract
     params do
       required(:name).filled(:string)
       required(:email).filled(:string)

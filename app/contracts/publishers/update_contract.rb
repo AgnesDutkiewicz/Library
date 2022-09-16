@@ -1,7 +1,5 @@
-require 'dry-validation'
-
 module Publishers
-  class UpdateContract < Dry::Validation::Contract
+  class UpdateContract < Contract
     params do
       required(:name).filled(:string)
       optional(:origin).value(:string)

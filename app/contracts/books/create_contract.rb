@@ -1,7 +1,5 @@
-require 'dry-validation'
-
 module Books
-  class CreateContract < Dry::Validation::Contract
+  class CreateContract < Contract
     params do
       required(:title).filled(:string)
       optional(:publication_date).value(:date)

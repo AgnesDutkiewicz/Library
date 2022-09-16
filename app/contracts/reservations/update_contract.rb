@@ -1,7 +1,5 @@
-require 'dry-validation'
-
 module Reservations
-  class UpdateContract < Dry::Validation::Contract
+  class UpdateContract < Contract
     params do
       required(:book_id).value(:integer)
       required(:user_id).value(:integer)
