@@ -1,6 +1,8 @@
 require 'dry-validation'
 
-class CreateContract < Dry::Validation::Contract
+module Authors
+  class CreateContract < Dry::Validation::Contract
+end
   params do
     required(:name).filled(:string)
     optional(:birth_year).value(:integer)
