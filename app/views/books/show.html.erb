@@ -17,10 +17,12 @@
 
 <% if current_user %>
   <% if @current_reservation %>
-    <p><%= "Book is reserved until #{@current_reservation.date_of_return.strftime('%d-%m-%Y')}" %></p>
+    <p><%= "Book is reserved until #{@current_reservation.return_date.strftime('%d-%m-%Y')}" %></p>
     <% if current_user_admin? %>
-      <%= button_to "Cancel Reservation", book_reservation_path(@book, @current_reservation), method: :patch %>
+      <%= button_to "Change Reservation", edit_book_reservation_path(@book, @current_reservation), method: :get %>
     <% end %>
+  <% elsif @book_lost %>
+    <%= "Book is lost" %>
   <% else %>
     <%= button_to "Make Reservation", book_reservations_path(@book) %>
   <% end %>

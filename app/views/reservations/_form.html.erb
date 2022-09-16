@@ -1,0 +1,14 @@
+<%= form_for([@book, @reservation]) do |f| %>
+
+  <p>
+    <%= f.label :status %><br/>
+    <%= f.select :status, [["Reserved", "reserved"], ["Borrowed", "borrowed"], ["Returned", "returned"], ["Lost", "lost"]] %>
+  </p>
+
+  <p>
+    <%= f.label :return_date %><br/>
+    <%= f.date_select :return_date %>
+  </p>
+
+  <%= f.submit %>
+<% end %>

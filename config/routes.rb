@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   resources :books do
     resources :reservations
   end
-  resources :reservations
+  resources :reservations, only: [:index, :show]
   resources :publishers, except: [:destroy]
   resources :authors, except: [:destroy]
 end

@@ -4,10 +4,8 @@
   User: <%= link_to @reservation.user.name, user_path(@reservation.user) %>
 </p>
 <p>
-  <% if @reservation.status_up == true %>
-    Book is reserved until:
-    <%= @reservation.date_of_return.strftime('%d-%m-%Y') %>
-  <% else %>
-    <%= "Reservation has allready been canceled" %>
-  <% end %>
+  Book status:
+    <%= @reservation.status %>
 </p>
+
+<%= button_to "Change Reservation", edit_book_reservation_path(@reservation.book, @reservation), method: :get %>
