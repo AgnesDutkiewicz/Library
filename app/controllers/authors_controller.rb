@@ -16,11 +16,17 @@ class AuthorsController < ApplicationController
   end
 
   def create
-    @author = Author.new(author_params)
-    if @author.save
-      redirect_to @author, notice: 'Author successfully created!'
+    contract = Authors::CreateContract.new
+    result = contract.call(params)
+    if result.success?
+      @author = Author.new(author_params)
+      if @author.save
+        redirect_to @author, notice: 'Author successfully created!'
+      else
+        render :new
+      end
     else
-      render :new
+      puts result.errors.to_h
     end
   end
 
@@ -40,6 +46,6 @@ class AuthorsController < ApplicationController
   private
 
   def author_params
-    params.require(:author).permit(:name, :birth_year)
+    params.require(:author).permit(:name, :birth_date)
   end
 end
