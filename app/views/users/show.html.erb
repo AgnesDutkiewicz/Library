@@ -15,7 +15,9 @@
       </p>
     <% end %>
   <% else %>
-    <%= content_tag(:strong, 'No reserved books') %>
+    <p>
+      <%= content_tag(:strong, 'No reserved books') %>
+    </p>
   <% end %>
 
   <% if @borrowed_books.any? %>
@@ -28,7 +30,9 @@
       </p>
     <% end %>
   <% else %>
-    <%= content_tag(:strong, 'No borrowed books') %>
+   <p>
+     <%= content_tag(:strong, 'No borrowed books') %>
+   </p>
   <% end %>
 
   <% if @lost_books.any? %>
