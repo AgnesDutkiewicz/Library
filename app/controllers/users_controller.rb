@@ -8,9 +8,9 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @reservations = @user.reservations.status_reserved
-    @borrowed_books = @user.reservations.status_borrowed
-    @lost_books = @user.reservations.status_lost
+    @reservations = @user.reservations.reserved
+    @borrowed_books = @user.reservations.borrowed
+    @lost_books = @user.reservations.lost
   end
 
   def new

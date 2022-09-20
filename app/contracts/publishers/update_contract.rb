@@ -1,8 +1,8 @@
-require 'dry-validation'
-
-class UpdateContract < Dry::Validation::Contract
-  params do
-    required(:name).filled(:string)
-    optional(:origin).value(:string)
+module Publishers
+  class UpdateContract < Contract
+    params do
+      required(:name).filled(:string)
+      optional(:origin).value(:string)
+    end
   end
 end

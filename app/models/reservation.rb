@@ -7,7 +7,7 @@ class Reservation < ApplicationRecord
     borrowed: 1,
     returned: 2,
     lost: 3
-  }, _prefix: true
+  }
 
   def booking_duration
     7
