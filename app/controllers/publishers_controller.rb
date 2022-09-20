@@ -15,11 +15,17 @@ class PublishersController < ApplicationController
   end
 
   def create
-    @publisher = Publisher.new(publisher_params)
-    if @publisher.save
-      redirect_to @publisher, notice: 'Publisher successfully created!'
+    contract = Publishers::UpdateContract.new
+    result = contract.call(publisher_params.to_h)
+    if result.success?
+      @publisher = Publisher.new(publisher_params)
+      if @publisher.save
+        redirect_to @publisher, notice: 'Publisher successfully created!'
+      else
+        render :new
+      end
     else
-      render :new
+      puts result.errors.to_h
     end
   end
 
@@ -28,11 +34,17 @@ class PublishersController < ApplicationController
   end
 
   def update
-    @publisher = Publisher.find(params[:id])
-    if @publisher.update(publisher_params)
-      redirect_to @publisher, notice: 'Publisher successfully updated!'
+    contract = Publishers::UpdateContract.new
+    result = contract.call(publisher_params.to_h)
+    if result.success?
+      @publisher = Publisher.find(params[:id])
+      if @publisher.update(publisher_params)
+        redirect_to @publisher, notice: 'Publisher successfully updated!'
+      else
+        render :edit
+      end
     else
-      render :edit
+      puts result.errors.to_h
     end
   end
 

@@ -12,8 +12,14 @@ class ReservationsController < ApplicationController
   end
 
   def create
-    @book.reservations.create!(user: current_user)
-    redirect_to user_path(current_user), notice: 'Book reserved!'
+    contract = Reservations::CreateContract.new
+    result = contract.call(reservation_params.to_h)
+    if result.success?
+      @book.reservations.create!(user: current_user)
+      redirect_to user_path(current_user), notice: 'Book reserved!'
+    else
+      puts result.errors.to_h
+    end
   end
 
   def edit
@@ -21,11 +27,17 @@ class ReservationsController < ApplicationController
   end
 
   def update
-    @reservation = Reservation.find(params[:id])
-    if @reservation.update(reservation_params)
-      redirect_to book_path(@book), notice: 'Reservation Changed'
+    contract = Reservations::UpdateContract.new
+    result = contract.call(reservation_params.to_h)
+    if result.success?
+      @reservation = Reservation.find(params[:id])
+      if @reservation.update(reservation_params)
+        redirect_to book_path(@book), notice: 'Reservation Changed'
+      else
+        render :edit
+      end
     else
-      render :edit
+      puts result.errors.to_h
     end
   end
 

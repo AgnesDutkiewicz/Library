@@ -25,11 +25,17 @@ class BooksController < ApplicationController
   end
 
   def create
-    @book = Book.new(book_params)
-    if @book.save
-      redirect_to @book, notice: 'Book successfully created!'
+    contract = Books::UpdateContract.new
+    result = contract.call(book_params.to_h)
+    if result.success?
+      @book = Book.new(book_params)
+      if @book.save
+        redirect_to @book, notice: 'Book successfully created!'
+      else
+        render :new
+      end
     else
-      render :new
+      puts result.errors.to_h
     end
   end
 
@@ -38,11 +44,17 @@ class BooksController < ApplicationController
   end
 
   def update
-    @book = Book.find(params[:id])
-    if @book.update(book_params)
-      redirect_to @book, notice: 'Book successfully updated!'
+    contract = Books::UpdateContract.new
+    result = contract.call(book_params.to_h)
+    if result.success?
+      @book = Book.find(params[:id])
+      if @book.update(book_params)
+        redirect_to @book, notice: 'Book successfully updated!'
+      else
+        render :edit
+      end
     else
-      render :edit
+      puts result.errors.to_h
     end
   end
 
