@@ -19,8 +19,7 @@ class AuthorsController < ApplicationController
     contract = Authors::UpdateContract.new
     result = contract.call(author_params.to_h)
     if result.success?
-      @author = Author.new(author_params)
-      if @author.save
+      if @author = AuthorCreator.call(name: author_params[:name], birth_date: author_params[:birth_date])
         redirect_to @author, notice: 'Author successfully created!'
       else
         render :new
