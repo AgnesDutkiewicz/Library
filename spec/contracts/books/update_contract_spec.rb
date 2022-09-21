@@ -18,7 +18,9 @@ describe Books::UpdateContract do
     it { expect(create_object.call({ publication_date: nil }).errors[:publication_date].present?).to eq true }
     it { expect(create_object.call({ publication_date: 13_121 }).errors[:publication_date].present?).to eq true }
     it { expect(create_object.call({ publication_date: [] }).errors[:publication_date].present?).to eq true }
-    it { expect(create_object.call({ publication_date: [DateTime.now] }).errors[:publication_date].present?).to eq true }
+    it {
+      expect(create_object.call({ publication_date: [DateTime.now] }).errors[:publication_date].present?).to eq true
+    }
     it { expect(create_object.call({ publication_date: 'Some date' }).errors[:publication_date].present?).to eq true }
     it { expect(create_object.call({ publication_date: DateTime.now }).errors[:publication_date].present?).to eq false }
   end
