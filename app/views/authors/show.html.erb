@@ -1,8 +1,10 @@
 <h1> <%= @author.name %> </h1>
 
 <p>
-  Date of birth:
-  <%= @author.birth_date.strftime('%d-%m-%Y') %>
+  <% if @author.birth_date.present? %>
+    Date of birth:
+    <%= @author.birth_date.strftime('%d-%m-%Y') %>
+  <% end %>
 </p>
 <p>
   <%= "Book".pluralize(@books.size) %>:
