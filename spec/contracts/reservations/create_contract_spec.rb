@@ -5,121 +5,44 @@ describe Reservations::CreateContract do
   subject(:create_object) { Reservations::CreateContract.new }
 
   context '#book_id' do
-    it {
-      expect(create_object.call({ user_id: 3, status: 1, return_date: DateTime.now + 7.days,
-                                  book_id: '' }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ user_id: 3, status: 1, return_date: DateTime.now + 7.days,
-                                  book_id: nil }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ user_id: 3, status: 1, return_date: DateTime.now + 7.days }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ user_id: 3, status: 1, return_date: DateTime.now + 7.days,
-                                  book_id: 'Some id' }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ user_id: 3, status: 1, return_date: DateTime.now + 7.days,
-                                  book_id: [] }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ user_id: 3, status: 1, return_date: DateTime.now + 7.days,
-                                  book_id: [3122] }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ user_id: 3, status: 1, return_date: DateTime.now + 7.days,
-                                  book_id: 3243 }).success?).to eq true
-    }
+    it { expect(create_object.call({ book_id: '' }).errors[:book_id].present?).to eq true }
+    it { expect(create_object.call({ book_id: nil }).errors[:book_id].present?).to eq true }
+    it { expect(create_object.call({}).errors[:book_id].present?).to eq true }
+    it { expect(create_object.call({ book_id: 'Some id' }).errors[:book_id].present?).to eq true }
+    it { expect(create_object.call({ book_id: [] }).errors[:book_id].present?).to eq true }
+    it { expect(create_object.call({ book_id: [3122] }).errors[:book_id].present?).to eq true }
+    it { expect(create_object.call({ book_id: 3243 }).errors[:book_id].present?).to eq false }
   end
 
   context '#user_id' do
-    it {
-      expect(create_object.call({ book_id: 3, status: 1, return_date: DateTime.now + 7.days,
-                                  user_id: '' }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ book_id: 3, status: 1, return_date: DateTime.now + 7.days,
-                                  user_id: nil }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ book_id: 3, status: 1, return_date: DateTime.now + 7.days }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ book_id: 3, status: 1, return_date: DateTime.now + 7.days,
-                                  user_id: 'Some id' }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ book_id: 3, status: 1, return_date: DateTime.now + 7.days,
-                                  user_id: [] }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ book_id: 3, status: 1, return_date: DateTime.now + 7.days,
-                                  user_id: [3122] }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ book_id: 3, status: 1, return_date: DateTime.now + 7.days,
-                                  user_id: 3243 }).success?).to eq true
-    }
+    it { expect(create_object.call({ user_id: '' }).errors[:user_id].present?).to eq true }
+    it { expect(create_object.call({ user_id: nil }).errors[:user_id].present?).to eq true }
+    it { expect(create_object.call({}).errors[:user_id].present?).to eq true }
+    it { expect(create_object.call({ user_id: 'Some id' }).errors[:user_id].present?).to eq true }
+    it { expect(create_object.call({ user_id: [] }).errors[:user_id].present?).to eq true }
+    it { expect(create_object.call({ user_id: [3122] }).errors[:user_id].present?).to eq true }
+    it { expect(create_object.call({ user_id: 3243 }).errors[:user_id].present?).to eq false }
   end
 
   context '#status' do
-    it {
-      expect(create_object.call({ book_id: 3, user_id: 1, return_date: DateTime.now + 7.days,
-                                  status: '' }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ book_id: 3, user_id: 1, return_date: DateTime.now + 7.days,
-                                  status: nil }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ book_id: 3, user_id: 1, return_date: DateTime.now + 7.days }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ book_id: 3, user_id: 1, return_date: DateTime.now + 7.days,
-                                  status: 'Some id' }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ book_id: 3, user_id: 1, return_date: DateTime.now + 7.days,
-                                  status: [] }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ book_id: 3, user_id: 1, return_date: DateTime.now + 7.days,
-                                  status: [3122] }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ book_id: 3, user_id: 1, return_date: DateTime.now + 7.days,
-                                  status: 3243 }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ book_id: 3, user_id: 1, return_date: DateTime.now + 7.days,
-                                  status: 3 }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ book_id: 3, user_id: 1, return_date: DateTime.now + 7.days,
-                                  status: 2 }).success?).to eq true
-    }
+    it { expect(create_object.call({ status: '' }).errors[:status].present?).to eq true }
+    it { expect(create_object.call({ status: nil }).errors[:status].present?).to eq true }
+    it { expect(create_object.call({}).errors[:status].present?).to eq true }
+    it { expect(create_object.call({ status: 'Some id' }).errors[:status].present?).to eq true }
+    it { expect(create_object.call({ status: [] }).errors[:status].present?).to eq true }
+    it { expect(create_object.call({ status: [3122] }).errors[:status].present?).to eq true }
+    it { expect(create_object.call({ status: 3243 }).errors[:status].present?).to eq true }
+    it { expect(create_object.call({ status: 3 }).errors[:status].present?).to eq true }
+    it { expect(create_object.call({ status: 2 }).errors[:status].present?).to eq false }
   end
 
   context '#return_date' do
-    it { expect(create_object.call({ book_id: 3, user_id: 3122, status: 1, return_date: '' }).success?).to eq false }
-    it { expect(create_object.call({ book_id: 3, user_id: 3122, status: 1, return_date: nil }).success?).to eq false }
-    it {
-      expect(create_object.call({ book_id: 3, user_id: 3122, status: 1, return_date: 13_121 }).success?).to eq false
-    }
-    it { expect(create_object.call({ book_id: 3, user_id: 3122, status: 1, return_date: [] }).success?).to eq false }
-    it {
-      expect(create_object.call({ book_id: 3, user_id: 3122, status: 1,
-                                  return_date: [DateTime.now] }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ book_id: 3, user_id: 3122, status: 1,
-                                  return_date: 'Some date' }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ book_id: 3, user_id: 3122, status: 1,
-                                  return_date: DateTime.now }).success?).to eq true
-    }
+    it { expect(create_object.call({ return_date: '' }).errors[:return_date].present?).to eq true }
+    it { expect(create_object.call({ return_date: nil }).errors[:return_date].present?).to eq true }
+    it { expect(create_object.call({ return_date: 13_121 }).errors[:return_date].present?).to eq true }
+    it { expect(create_object.call({ return_date: [] }).errors[:return_date].present?).to eq true }
+    it { expect(create_object.call({ return_date: [DateTime.now] }).errors[:return_date].present?).to eq true }
+    it { expect(create_object.call({ return_date: 'Some date' }).errors[:return_date].present?).to eq true }
+    it { expect(create_object.call({ return_date: DateTime.now }).errors[:return_date].present?).to eq false }
   end
 end

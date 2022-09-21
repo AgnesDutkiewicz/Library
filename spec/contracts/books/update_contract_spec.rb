@@ -5,99 +5,43 @@ describe Books::UpdateContract do
   subject(:create_object) { Books::UpdateContract.new }
 
   context '#title' do
-    it { expect(create_object.call({ publisher_id: 5, author_ids: [2, 5, 7], title: '' }).success?).to eq false }
-    it { expect(create_object.call({ publisher_id: 5, author_ids: [2, 5, 7], title: nil }).success?).to eq false }
-    it { expect(create_object.call({ publisher_id: 5, author_ids: [2, 5, 7] }).success?).to eq false }
-    it { expect(create_object.call({ publisher_id: 5, author_ids: [2, 5, 7], title: 1234 }).success?).to eq false }
-    it { expect(create_object.call({ publisher_id: 5, author_ids: [2, 5, 7], title: [] }).success?).to eq false }
-    it {
-      expect(create_object.call({ publisher_id: 5, author_ids: [2, 5, 7], title: 'Book Title' }).success?).to eq true
-    }
+    it { expect(create_object.call({ title: '' }).errors[:title].present?).to eq true }
+    it { expect(create_object.call({ title: nil }).errors[:title].present?).to eq true }
+    it { expect(create_object.call({}).errors[:title].present?).to eq true }
+    it { expect(create_object.call({ title: 1234 }).errors[:title].present?).to eq true }
+    it { expect(create_object.call({ title: [] }).errors[:title].present?).to eq true }
+    it { expect(create_object.call({ title: 'Book Title' }).errors[:title].present?).to eq false }
   end
 
   context '#publication_date' do
-    it {
-      expect(create_object.call({ title: 'The Demon King', publisher_id: 5, author_ids: [2, 5, 7],
-                                  publication_date: '' }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ title: 'The Demon King', publisher_id: 5, author_ids: [2, 5, 7],
-                                  publication_date: nil }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ title: 'The Demon King', publisher_id: 5, author_ids: [2, 5, 7],
-                                  publication_date: 13_121 }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ title: 'The Demon King', publisher_id: 5, author_ids: [2, 5, 7],
-                                  publication_date: [] }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ title: 'The Demon King', publisher_id: 5, author_ids: [2, 5, 7],
-                                  publication_date: [DateTime.now] }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ title: 'The Demon King', publisher_id: 5, author_ids: [2, 5, 7],
-                                  publication_date: 'Some date' }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ title: 'The Demon King', publisher_id: 5, author_ids: [2, 5, 7],
-                                  publication_date: DateTime.now }).success?).to eq true
-    }
+    it { expect(create_object.call({ publication_date: '' }).errors[:publication_date].present?).to eq true }
+    it { expect(create_object.call({ publication_date: nil }).errors[:publication_date].present?).to eq true }
+    it { expect(create_object.call({ publication_date: 13_121 }).errors[:publication_date].present?).to eq true }
+    it { expect(create_object.call({ publication_date: [] }).errors[:publication_date].present?).to eq true }
+    it { expect(create_object.call({ publication_date: [DateTime.now] }).errors[:publication_date].present?).to eq true }
+    it { expect(create_object.call({ publication_date: 'Some date' }).errors[:publication_date].present?).to eq true }
+    it { expect(create_object.call({ publication_date: DateTime.now }).errors[:publication_date].present?).to eq false }
   end
 
   context '#author_ids' do
-    it { expect(create_object.call({ title: 'The Demon King', publisher_id: 5, author_ids: '' }).success?).to eq false }
-    it {
-      expect(create_object.call({ title: 'The Demon King', publisher_id: 5, author_ids: nil }).success?).to eq false
-    }
-    it { expect(create_object.call({ title: 'The Demon King', publisher_id: 5 }).success?).to eq false }
-    it {
-      expect(create_object.call({ title: 'The Demon King', publisher_id: 5, author_ids: 678 }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ title: 'The Demon King', publisher_id: 5,
-                                  author_ids: Time.now }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ title: 'The Demon King', publisher_id: 5,
-                                  author_ids: 'Some id' }).success?).to eq false
-    }
-    it { expect(create_object.call({ title: 'The Demon King', publisher_id: 5, author_ids: [] }).success?).to eq false }
-    it {
-      expect(create_object.call({ title: 'The Demon King', publisher_id: 5, author_ids: %w[a b] }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ title: 'The Demon King', publisher_id: 5,
-                                  author_ids: [2, 5, 7] }).success?).to eq true
-    }
+    it { expect(create_object.call({ author_ids: '' }).errors[:author_ids].present?).to eq true }
+    it { expect(create_object.call({ author_ids: nil }).errors[:author_ids].present?).to eq true }
+    it { expect(create_object.call({}).errors[:author_ids].present?).to eq true }
+    it { expect(create_object.call({ author_ids: 678 }).errors[:author_ids].present?).to eq true }
+    it { expect(create_object.call({ author_ids: Time.now }).errors[:author_ids].present?).to eq true }
+    it { expect(create_object.call({ author_ids: 'Some id' }).errors[:author_ids].present?).to eq true }
+    it { expect(create_object.call({ author_ids: [] }).errors[:author_ids].present?).to eq true }
+    it { expect(create_object.call({ author_ids: %w[a b] }).errors[:author_ids].present?).to eq true }
+    it { expect(create_object.call({ author_ids: [2, 5, 7] }).errors[:author_ids].present?).to eq false }
   end
 
   context '#publisher_id' do
-    it {
-      expect(create_object.call({ title: 'The Demon King', author_ids: [2, 5, 7],
-                                  publisher_id: '' }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ title: 'The Demon King', author_ids: [2, 5, 7],
-                                  publisher_id: nil }).success?).to eq false
-    }
-    it { expect(create_object.call({ title: 'The Demon King', author_ids: [2, 5, 7] }).success?).to eq false }
-    it {
-      expect(create_object.call({ title: 'The Demon King', author_ids: [2, 5, 7],
-                                  publisher_id: 'Some id' }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ title: 'The Demon King', author_ids: [2, 5, 7],
-                                  publisher_id: [] }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ title: 'The Demon King', author_ids: [2, 5, 7],
-                                  publisher_id: [3122] }).success?).to eq false
-    }
-    it {
-      expect(create_object.call({ title: 'The Demon King', author_ids: [2, 5, 7],
-                                  publisher_id: 3243 }).success?).to eq true
-    }
+    it { expect(create_object.call({ publisher_id: '' }).errors[:publisher_id].present?).to eq true }
+    it { expect(create_object.call({ publisher_id: nil }).errors[:publisher_id].present?).to eq true }
+    it { expect(create_object.call({}).errors[:publisher_id].present?).to eq true }
+    it { expect(create_object.call({ publisher_id: 'Some id' }).errors[:publisher_id].present?).to eq true }
+    it { expect(create_object.call({ publisher_id: [] }).errors[:publisher_id].present?).to eq true }
+    it { expect(create_object.call({ publisher_id: [3122] }).errors[:publisher_id].present?).to eq true }
+    it { expect(create_object.call({ publisher_id: 3243 }).errors[:publisher_id].present?).to eq false }
   end
 end
