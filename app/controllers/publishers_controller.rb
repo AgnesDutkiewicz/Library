@@ -18,8 +18,7 @@ class PublishersController < ApplicationController
     contract = Publishers::UpdateContract.new
     result = contract.call(publisher_params.to_h)
     if result.success?
-      @publisher = Publisher.new(publisher_params)
-      if @publisher.save
+      if @publisher = PublisherCreator.call(name: publisher_params[:name], origin: publisher_params[:origin])
         redirect_to @publisher, notice: 'Publisher successfully created!'
       else
         render :new
