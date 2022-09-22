@@ -1,6 +1,6 @@
 class AuthorsController < ApplicationController
   before_action :require_sign_in, except: [:index, :show]
-  # before_action :require_admin, except: [:index, :show]
+  before_action :require_admin, except: [:index, :show]
 
   def index
     @authors = Author.all
@@ -19,13 +19,15 @@ class AuthorsController < ApplicationController
     contract = Authors::UpdateContract.new
     result = contract.call(author_params.to_h)
     if result.success?
-      if @author = AuthorCreator.call(name: author_params[:name], birth_date: author_params[:birth_date])
+      # if @author = AuthorCreator.call(name: author_params[:name], birth_date: author_params[:birth_date])
+      @author = Author.new(author_params)
+      if @author.save
         redirect_to @author, notice: 'Author successfully created!'
       else
         render :new
       end
-    else
-      puts result.errors.to_h
+    # else
+      # puts result.errors.to_h
     end
   end
 
@@ -43,8 +45,8 @@ class AuthorsController < ApplicationController
       else
         render :edit
       end
-    else
-      puts result.errors.to_h
+    # else
+    #   puts result.errors.to_h
     end
   end
 

@@ -1,9 +1,11 @@
 <h1> <%= @author.name %> </h1>
 
 <p>
+  Date of birth:
   <% if @author.birth_date.present? %>
-    Date of birth:
     <%= @author.birth_date.strftime('%d-%m-%Y') %>
+    <% else %>
+  <%= 'Not given' %>
   <% end %>
 </p>
 <p>

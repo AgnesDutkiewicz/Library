@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
   before_action :require_sign_in, except: [:index, :show]
-  # before_action :require_admin, except: [:index, :show]
+  before_action :require_admin, except: [:index, :show]
 
   def index
     @books = Book.all
@@ -34,8 +34,8 @@ class BooksController < ApplicationController
       else
         render :new
       end
-    else
-      puts result.errors.to_h
+    # else
+    #   puts result.errors.to_h
     end
   end
 
@@ -53,8 +53,8 @@ class BooksController < ApplicationController
       else
         render :edit
       end
-    else
-      puts result.errors.to_h
+    # else
+    #   puts result.errors.to_h
     end
   end
 
