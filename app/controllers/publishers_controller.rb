@@ -21,12 +21,12 @@ class PublishersController < ApplicationController
       # if @publisher = PublisherCreator.call(name: publisher_params[:name], origin: publisher_params[:origin])
       @publisher = Publisher.new(publisher_params)
       if @publisher.save
-      redirect_to @publisher, notice: 'Publisher successfully created!'
+        redirect_to @publisher, notice: 'Publisher successfully created!'
       else
         render :new
       end
-    # else
-    #   puts result.errors.to_h
+      # else
+      #   puts result.errors.to_h
     end
   end
 
@@ -44,8 +44,8 @@ class PublishersController < ApplicationController
       else
         render :edit
       end
-    # else
-    #   puts result.errors.to_h
+      # else
+      #   puts result.errors.to_h
     end
   end
 

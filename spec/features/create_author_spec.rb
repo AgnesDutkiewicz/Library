@@ -9,7 +9,6 @@ describe 'Creating new author' do
 
   context 'when all attributes are given' do
     it "saves the author and shows the new author's details" do
-
       visit authors_url
 
       click_link 'Add New Author'

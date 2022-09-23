@@ -26,7 +26,7 @@ class AuthorsController < ApplicationController
       else
         render :new
       end
-    # else
+      # else
       # puts result.errors.to_h
     end
   end
@@ -45,8 +45,8 @@ class AuthorsController < ApplicationController
       else
         render :edit
       end
-    # else
-    #   puts result.errors.to_h
+      # else
+      #   puts result.errors.to_h
     end
   end
 
