@@ -8,21 +8,17 @@ module Books
     end
 
     def call
-      execute
+      contract = Books::UpdateContract.new
+      result = contract.call(title: @title, publication_date: @publication_date, publisher_id: @publisher_id.to_i,
+                             author_ids: @author_ids.map(&:to_i)[1..])
+      create_book if result.success?
     end
 
     private
 
-    def execute
-      contract = Books::UpdateContract.new
-      result = contract.call(title: @title, publication_date: @publication_date, publisher_id: @publisher_id,
-                             author_ids: @author_ids.map(&:to_i))
-      create_book if result.success?
-    end
-
     def create_book
-      @book = Book.create!(title: @title, publication_date: @publication_date, publisher_id: @publisher_id,
-                           author_ids: @author_ids.map(&:to_i))
+      Book.create(title: @title, publication_date: @publication_date, publisher_id: @publisher_id.to_i,
+                           author_ids: @author_ids.map(&:to_i)[1..])
     end
   end
 end

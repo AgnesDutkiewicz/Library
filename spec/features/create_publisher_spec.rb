@@ -58,7 +58,6 @@ describe 'Creating new publisher' do
       expect do
         click_button 'Create Publisher'
       end.not_to change(Publisher, :count)
-
       expect(current_path).to eq(publishers_path)
     end
   end

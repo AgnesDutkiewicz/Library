@@ -25,15 +25,14 @@ class BooksController < ApplicationController
   end
 
   def create
-    @book = Book.new
-    if Books::BookCreator.call(book_params.to_h)
+    @book = Books::BookCreator.call(book_params.to_h)
+
+    if @book
       redirect_to @book, notice: 'Book successfully created!'
     else
+      @book = Book.new
       render :new
     end
-    # else
-    #   puts result.errors.to_h
-    # end
   end
 
   def edit
@@ -50,8 +49,6 @@ class BooksController < ApplicationController
       else
         render :edit
       end
-      # else
-      #   puts result.errors.to_h
     end
   end
 

@@ -15,9 +15,12 @@ class PublishersController < ApplicationController
   end
 
   def create
-    @pubisher = PublisherCreator.call(publisher_params.to_h)
-    if publisher.any?
+    @publisher = Publishers::PublisherCreator.call(publisher_params.to_h)
+    if @publisher
       redirect_to @publisher, notice: 'Publisher successfully created!'
+    else
+      @publisher = Publisher.new
+      render :new
     end
   end
 
