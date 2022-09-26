@@ -16,18 +16,12 @@ class AuthorsController < ApplicationController
   end
 
   def create
-    contract = Authors::UpdateContract.new
-    result = contract.call(author_params.to_h)
-    if result.success?
-      # if @author = AuthorCreator.call(name: author_params[:name], birth_date: author_params[:birth_date])
-      @author = Author.new(author_params)
-      if @author.save
-        redirect_to @author, notice: 'Author successfully created!'
-      else
-        render :new
-      end
-      # else
-      # puts result.errors.to_h
+    @author = Authors::AuthorCreator.call(author_params.to_h)
+    if @author
+      redirect_to @author, notice: 'Author successfully created!'
+    else
+      @author = Author.new
+      render :new
     end
   end
 
@@ -36,17 +30,12 @@ class AuthorsController < ApplicationController
   end
 
   def update
-    contract = Authors::UpdateContract.new
-    result = contract.call(author_params.to_h)
-    if result.success?
-      @author = Author.find(params[:id])
-      if @author.update(author_params)
-        redirect_to @author, notice: 'Author successfully updated!'
-      else
-        render :edit
-      end
-      # else
-      #   puts result.errors.to_h
+    @author = Author.find(params[:id])
+    Authors::AuthorEditor.call(@author, author_params.to_h)
+    if @author
+      redirect_to @author, notice: 'Author successfully updated!'
+    else
+      render :edit
     end
   end
 

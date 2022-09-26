@@ -29,17 +29,12 @@ class PublishersController < ApplicationController
   end
 
   def update
-    contract = Publishers::UpdateContract.new
-    result = contract.call(publisher_params.to_h)
-    if result.success?
-      @publisher = Publisher.find(params[:id])
-      if @publisher.update(publisher_params)
-        redirect_to @publisher, notice: 'Publisher successfully updated!'
-      else
-        render :edit
-      end
-      # else
-      #   puts result.errors.to_h
+    @publisher = Publisher.find(params[:id])
+    Publishers::PublisherEditor.call(@publisher, publisher_params.to_h)
+    if @publisher
+      redirect_to @publisher, notice: 'Publisher successfully updated!'
+    else
+      render :edit
     end
   end
 

@@ -1,18 +1,19 @@
 module Authors
   class AuthorCreator < ApplicationService
-    def initialize(name:, birth_date:)
-      @name = name
-      @birth_date = birth_date
+    def initialize(params)
+      @params = params
     end
 
     def call
-      create_author
+      contract = Authors::UpdateContract.new
+      result = contract.call(@params)
+      create_author if result.success?
     end
 
     private
 
     def create_author
-      @author = Author.create!(name: @name, birth_date: @birth_date)
+      Author.create(**@params)
     end
   end
 end
