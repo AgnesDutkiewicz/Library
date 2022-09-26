@@ -40,15 +40,13 @@ class BooksController < ApplicationController
   end
 
   def update
-    contract = Books::UpdateContract.new
-    result = contract.call(book_params.to_h)
-    if result.success?
-      @book = Book.find(params[:id])
-      if @book.update(book_params)
-        redirect_to @book, notice: 'Book successfully updated!'
-      else
-        render :edit
-      end
+    @book = Book.find(params[:id])
+    Books::BookEditor.call(@book, book_params.to_h)
+
+    if @book
+      redirect_to @book, notice: 'Book successfully updated!'
+    else
+      render :edit
     end
   end
 

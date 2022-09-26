@@ -57,7 +57,7 @@ describe 'Editing book' do
 
       expect do
         click_button 'Update Book'
-      end.not_to change(Book, :title)
+      end.not_to change(book, :title)
     end
   end
 end
