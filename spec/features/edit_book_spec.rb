@@ -49,6 +49,27 @@ describe 'Editing book' do
     end
   end
 
+  context 'when publication_date is changed' do
+    it "updates book and shows the book's updated details" do
+      visit book_url(book)
+
+      click_link 'Edit'
+
+      expect(current_path).to eq(edit_book_path(book))
+      expect(find_field('Title').value).to eq(book.title)
+
+      select '2022', from: 'author_birth_date_1i'
+      select 'May', from: 'author_birth_date_2i'
+      select '15', from: 'author_birth_date_3i'
+
+      click_button 'Update Book'
+
+      expect(current_path).to eq(book_path(book))
+      expect(page).to have_text('Updated Title')
+      expect(page).to have_text('Book successfully updated!')
+    end
+  end
+
   context 'when title is changed to blank' do
     it 'fails to update book' do
       visit edit_book_url(book)
