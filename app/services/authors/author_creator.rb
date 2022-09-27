@@ -8,7 +8,12 @@ module Authors
       prepare_params
       contract = Authors::UpdateContract.new
       result = contract.call(@params)
-      create_author if result.success?
+      if result.success?
+        create_author
+      else
+        @errors = []
+        @errors << result.errors.to_h
+      end
     end
 
     private

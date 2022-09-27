@@ -16,12 +16,14 @@ class AuthorsController < ApplicationController
   end
 
   def create
-    @author = Authors::AuthorCreator.call(author_params.to_h)
-    if @author
-      redirect_to @author, notice: 'Author successfully created!'
-    else
+    @result = Authors::AuthorCreator.call(author_params.to_h)
+    if @result.is_a? Array
+      @errors = @result
       @author = Author.new
       render :new
+    else
+      @author = @result
+      redirect_to @author, notice: 'Author successfully created!'
     end
   end
 
@@ -31,11 +33,12 @@ class AuthorsController < ApplicationController
 
   def update
     @author = Author.find(params[:id])
-    Authors::AuthorEditor.call(@author, author_params.to_h)
-    if @author
-      redirect_to @author, notice: 'Author successfully updated!'
-    else
+    @result = Authors::AuthorEditor.call(@author, author_params.to_h)
+    if @result.is_a? Array
+      @errors = @result
       render :edit
+    else
+      redirect_to @author, notice: 'Author successfully updated!'
     end
   end
 
