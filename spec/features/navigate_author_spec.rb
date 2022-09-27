@@ -10,7 +10,7 @@ describe 'Navigating authors' do
       click_link 'John Tolkien'
 
       expect(page).to have_text('John Tolkien')
-      expect(page).to have_text((DateTime.now - 100.years).strftime('%d-%m-%Y'))
+      expect(page).to have_text((DateTime.now - 5.years).strftime('%d-%m-%Y'))
     end
   end
 

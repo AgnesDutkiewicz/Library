@@ -30,7 +30,7 @@ describe 'Creating new book' do
       expect(current_path).to eq(book_path(Book.last))
       expect(page).to have_text('New Book Title')
       expect(page).to have_text('John Tolkien')
-      # expect(page).to have_text('2022/05/15'.to_date.strftime('%d-%m-%Y'))
+      expect(page).to have_text('2022/05/15'.to_date.strftime('%d-%m-%Y'))
       expect(page).to have_text('Book successfully created!')
     end
   end
@@ -66,7 +66,9 @@ describe 'Creating new book' do
       expect(current_path).to eq(new_book_path)
 
       fill_in 'Title', with: 'New Book Title'
-      select (Time.now.year - 1), from: 'book_publication_date_1i'
+      select '2022', from: 'book_publication_date_1i'
+      select 'May', from: 'book_publication_date_2i'
+      select '15', from: 'book_publication_date_3i'
       select publisher.name, from: 'book_publisher_id'
 
       expect do

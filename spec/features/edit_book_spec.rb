@@ -58,14 +58,14 @@ describe 'Editing book' do
       expect(current_path).to eq(edit_book_path(book))
       expect(find_field('Title').value).to eq(book.title)
 
-      select '2022', from: 'book_publication_date_1i'
+      select '1985', from: 'book_publication_date_1i'
       select 'May', from: 'book_publication_date_2i'
       select '15', from: 'book_publication_date_3i'
 
       click_button 'Update Book'
 
       expect(current_path).to eq(book_path(book))
-      # expect(page).to have_text('2021/05/15'.to_date.strftime('%d-%m-%Y'))
+      expect(page).to have_text('1985/05/15'.to_date.strftime('%d-%m-%Y'))
       expect(page).to have_text('Book successfully updated!')
     end
   end

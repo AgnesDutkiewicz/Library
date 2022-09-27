@@ -41,7 +41,7 @@ describe 'Editing author' do
       click_button 'Update Author'
 
       expect(current_path).to eq(author_path(author))
-      # expect(page).to have_text('2021/05/15'.to_date.strftime('%d-%m-%Y'))
+      expect(page).to have_text('2021/05/15'.to_date.strftime('%d-%m-%Y'))
       expect(page).to have_text('Author successfully updated!')
     end
   end

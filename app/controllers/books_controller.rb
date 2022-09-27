@@ -26,7 +26,6 @@ class BooksController < ApplicationController
 
   def create
     @book = Books::BookCreator.call(book_params.to_h)
-
     if @book
       redirect_to @book, notice: 'Book successfully created!'
     else
@@ -42,7 +41,6 @@ class BooksController < ApplicationController
   def update
     @book = Book.find(params[:id])
     Books::BookEditor.call(@book, book_params.to_h)
-
     if @book
       redirect_to @book, notice: 'Book successfully updated!'
     else

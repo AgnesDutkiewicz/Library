@@ -5,12 +5,17 @@ module Authors
     end
 
     def call
+      prepare_params
       contract = Authors::UpdateContract.new
       result = contract.call(@params)
       create_author if result.success?
     end
 
     private
+
+    def prepare_params
+      @params[:birth_date] = DateTime.new(@params["birth_date(1i)"].to_i, @params["birth_date(2i)"].to_i, @params["birth_date(3i)"].to_i)
+    end
 
     def create_author
       Author.create(**@params)

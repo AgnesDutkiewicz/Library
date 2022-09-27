@@ -14,7 +14,7 @@ module Authors
     private
 
     def update_author
-      Author.update(**@params)
+      @author.update(**@params)
     end
   end
 end

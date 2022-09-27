@@ -14,7 +14,7 @@ module Publishers
     private
 
     def update_publisher
-      Publisher.update(**@params)
+      @publisher.update(**@params)
     end
   end
 end
