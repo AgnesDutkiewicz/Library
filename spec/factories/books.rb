@@ -7,7 +7,7 @@ FactoryBot.define do
 
   factory :author do
     name { 'John Tolkien' }
-    birth_date { (DateTime.now - 100.years) }
+    birth_date { (DateTime.now - 5.years) }
   end
 
   factory :book_with_author, parent: :book do

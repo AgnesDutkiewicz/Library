@@ -1,6 +1,12 @@
 require 'rails_helper'
 
 describe 'Creating new publisher' do
+  let!(:admin) { create :user, admin: true }
+
+  before do
+    login
+  end
+
   context 'when all attributes are given' do
     it "saves publisher and shows the new publisher's details" do
       visit publishers_url
@@ -52,7 +58,6 @@ describe 'Creating new publisher' do
       expect do
         click_button 'Create Publisher'
       end.not_to change(Publisher, :count)
-
       expect(current_path).to eq(publishers_path)
     end
   end

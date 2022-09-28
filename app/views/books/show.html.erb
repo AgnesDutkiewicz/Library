@@ -11,8 +11,10 @@
   <%= link_to @book.publisher.name, publisher_path(@book.publisher) %>
 </p>
 <p>
-  Publication date:
-  <%= @book.publication_date.strftime('%d-%m-%Y') %>, (<%= time_ago_in_words(@book.publication_date) %> ago)
+  <% unless @book.publication_date.nil? %>
+    Publication date:
+    <%= @book.publication_date.strftime('%d-%m-%Y') %>, (<%= time_ago_in_words(@book.publication_date) %> ago)
+  <% end %>
 </p>
 
 <% if current_user %>

@@ -16,13 +16,13 @@ describe Publishers::UpdateContract do
   end
 
   context '#origin' do
-    it { expect(create_object.call({ origin: '' }).errors[:origin].present?).to eq true }
     it { expect(create_object.call({ origin: nil }).errors[:origin].present?).to eq true }
     it { expect(create_object.call({ origin: 777 }).errors[:origin].present?).to eq true }
     it { expect(create_object.call({ origin: Time.now }).errors[:origin].present?).to eq true }
     it { expect(create_object.call({ origin: [] }).errors[:origin].present?).to eq true }
     it { expect(create_object.call({ origin: ['USA'] }).errors[:origin].present?).to eq true }
     it { expect(create_object.call({}).errors[:origin].present?).to eq false }
+    it { expect(create_object.call({ origin: '' }).errors[:origin].present?).to eq false }
     it { expect(create_object.call({ origin: 'USA' }).errors[:origin].present?).to eq false }
   end
 end

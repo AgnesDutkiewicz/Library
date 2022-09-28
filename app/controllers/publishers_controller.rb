@@ -1,6 +1,6 @@
 class PublishersController < ApplicationController
   before_action :require_sign_in, except: [:index, :show]
-  # before_action :require_admin, except: [:index, :show]
+  before_action :require_admin, except: [:index, :show]
 
   def index
     @publishers = Publisher.all
@@ -15,16 +15,12 @@ class PublishersController < ApplicationController
   end
 
   def create
-    contract = Publishers::UpdateContract.new
-    result = contract.call(publisher_params.to_h)
-    if result.success?
-      if @publisher = PublisherCreator.call(name: publisher_params[:name], origin: publisher_params[:origin])
-        redirect_to @publisher, notice: 'Publisher successfully created!'
-      else
-        render :new
-      end
+    @publisher = Publishers::PublisherCreator.call(publisher_params.to_h)
+    if @publisher
+      redirect_to @publisher, notice: 'Publisher successfully created!'
     else
-      puts result.errors.to_h
+      @publisher = Publisher.new
+      render :new
     end
   end
 
@@ -33,17 +29,12 @@ class PublishersController < ApplicationController
   end
 
   def update
-    contract = Publishers::UpdateContract.new
-    result = contract.call(publisher_params.to_h)
-    if result.success?
-      @publisher = Publisher.find(params[:id])
-      if @publisher.update(publisher_params)
-        redirect_to @publisher, notice: 'Publisher successfully updated!'
-      else
-        render :edit
-      end
+    @publisher = Publisher.find(params[:id])
+    Publishers::PublisherEditor.call(@publisher, publisher_params.to_h)
+    if @publisher
+      redirect_to @publisher, notice: 'Publisher successfully updated!'
     else
-      puts result.errors.to_h
+      render :edit
     end
   end
 

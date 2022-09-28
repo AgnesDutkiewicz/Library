@@ -2,6 +2,11 @@ require 'rails_helper'
 
 describe 'Editing author' do
   let!(:author) { create :author }
+  let!(:admin) { create :user, admin: true }
+
+  before do
+    login
+  end
 
   context 'when name is changed' do
     it "updates author and shows the author's updated details" do
@@ -28,13 +33,15 @@ describe 'Editing author' do
       click_link 'Edit'
 
       expect(current_path).to eq(edit_author_path(author))
-      expect(find_field('Birth year').value).to eq('1892')
 
-      fill_in 'Birth year', with: '1500'
+      select '2021', from: 'author_birth_date_1i'
+      select 'May', from: 'author_birth_date_2i'
+      select '15', from: 'author_birth_date_3i'
+
       click_button 'Update Author'
 
       expect(current_path).to eq(author_path(author))
-      expect(page).to have_text('1500')
+      expect(page).to have_text('2021/05/15'.to_date.strftime('%d-%m-%Y'))
       expect(page).to have_text('Author successfully updated!')
     end
   end
@@ -45,11 +52,9 @@ describe 'Editing author' do
 
       fill_in 'Name', with: ''
 
-      click_button 'Update Author'
-
-      expect(page).to have_text('Editing author:')
-      expect(current_path).to eq(author_path(author))
-      expect(page).to have_text('error')
+      expect do
+        click_button 'Update Author'
+      end.not_to change(Author, :name)
     end
   end
 end

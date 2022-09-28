@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
   before_action :require_sign_in, except: [:index, :show]
-  # before_action :require_admin, except: [:index, :show]
+  before_action :require_admin, except: [:index, :show]
 
   def index
     @books = Book.all
@@ -25,17 +25,12 @@ class BooksController < ApplicationController
   end
 
   def create
-    contract = Books::UpdateContract.new
-    result = contract.call(book_params.to_h)
-    if result.success?
-      @book = Book.new(book_params)
-      if @book.save
-        redirect_to @book, notice: 'Book successfully created!'
-      else
-        render :new
-      end
+    @book = Books::BookCreator.call(book_params.to_h)
+    if @book
+      redirect_to @book, notice: 'Book successfully created!'
     else
-      puts result.errors.to_h
+      @book = Book.new
+      render :new
     end
   end
 
@@ -44,17 +39,12 @@ class BooksController < ApplicationController
   end
 
   def update
-    contract = Books::UpdateContract.new
-    result = contract.call(book_params.to_h)
-    if result.success?
-      @book = Book.find(params[:id])
-      if @book.update(book_params)
-        redirect_to @book, notice: 'Book successfully updated!'
-      else
-        render :edit
-      end
+    @book = Book.find(params[:id])
+    Books::BookEditor.call(@book, book_params.to_h)
+    if @book
+      redirect_to @book, notice: 'Book successfully updated!'
     else
-      puts result.errors.to_h
+      render :edit
     end
   end
 

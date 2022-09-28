@@ -2,6 +2,11 @@ require 'rails_helper'
 
 describe 'Deleting a book' do
   let!(:book) { create :book_with_author }
+  let!(:admin) { create :user, admin: true }
+
+  before do
+    login
+  end
 
   it 'successfully destroys the book and shows the book#index page without the deleted book' do
     visit book_path(book)

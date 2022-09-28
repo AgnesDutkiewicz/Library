@@ -2,6 +2,11 @@ require 'rails_helper'
 
 describe 'Editing publisher' do
   let!(:publisher) { create :publisher }
+  let!(:admin) { create :user, admin: true }
+
+  before do
+    login
+  end
 
   context 'when name is changed' do
     it "updates publisher and shows the publisher's updated details" do
@@ -45,11 +50,9 @@ describe 'Editing publisher' do
 
       fill_in 'Name', with: ''
 
-      click_button 'Update Publisher'
-
-      expect(page).to have_text('Editing publisher:')
-      expect(current_path).to eq(publisher_path(publisher))
-      expect(page).to have_text('error')
+      expect do
+        click_button 'Update Publisher'
+      end.not_to change(Publisher, :name)
     end
   end
 end
