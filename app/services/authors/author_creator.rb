@@ -1,34 +1,41 @@
 module Authors
   class AuthorCreator < ApplicationService
-    def initialize(params)
+    def initialize(user, params)
+      @user = user
       @params = params
+      @errors = []
     end
 
     def call
-      prepare_params
-      contract = Authors::UpdateContract.new
-      @result = contract.call(params)
-      success(@result)
-    end
-
-    def success(contract)
-      if contract.success? & create_author.success?
-        Success
+      if user.nil?
+        @errors << { user: 'must be present' }
+      elsif user.admin? == false
+        @errors << { user: 'must be admin' }
       else
-        failure
+        prepare_params
+        contract = Authors::UpdateContract.new
+        contract_call = contract.call(params)
+        if contract_call.failure?
+          @errors << contract_call.errors.to_h
+        else
+          create_author
+        end
       end
     end
 
-    def failure
-      @errors = []
-      if current_user
-        @errors << 'Failure(:not_logged_in)'
-      elsif current_user_not_admin?
-        @errors << 'Failure(:access_denied)'
-      elsif prepare_params.failure?
-        @errors << 'Failure(:something_went_wrong)'
-      elsif @result.failure?
-        @errors << 'Failure(:invalid_data)'
+    def success?
+      if @author.is_a? Author
+        true
+      else
+        false
+      end
+    end
+
+    def failure?
+      if @author.is_a? Author
+        false
+      else
+        true
       end
     end
 
@@ -38,7 +45,7 @@ module Authors
 
     private
 
-    attr_reader :params
+    attr_reader :params, :user
 
     def prepare_params
       params[:birth_date] = DateTime.new(params['birth_date(1i)'].to_i, params['birth_date(2i)'].to_i,
@@ -46,7 +53,7 @@ module Authors
     end
 
     def create_author
-      Author.create(**params)
+      @author = Author.create(**params)
     end
   end
 end
