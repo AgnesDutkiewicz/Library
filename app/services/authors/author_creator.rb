@@ -7,7 +7,7 @@ module Authors
     def call
       prepare_params
       contract = Authors::UpdateContract.new
-      result = contract.call(@params)
+      result = contract.call(params)
       if result.success?
         create_author
       else
@@ -18,12 +18,14 @@ module Authors
 
     private
 
+    attr_reader :params
+
     def prepare_params
-      @params[:birth_date] = DateTime.new(@params["birth_date(1i)"].to_i, @params["birth_date(2i)"].to_i, @params["birth_date(3i)"].to_i)
+      params[:birth_date] = DateTime.new(params['birth_date(1i)'].to_i, params['birth_date(2i)'].to_i, params['birth_date(3i)'].to_i)
     end
 
     def create_author
-      Author.create(**@params)
+      Author.create(**params)
     end
   end
 end
