@@ -23,20 +23,12 @@ module Authors
       end
     end
 
-    def success?
-      if @author.is_a? Author
-        true
-      else
-        false
-      end
+    def success?(call_result)
+      call_result.is_a?(Author)
     end
 
-    def failure?
-      if @author.is_a? Author
-        false
-      else
-        true
-      end
+    def failure?(call_result)
+      call_result == @errors
     end
 
     def error_messages
