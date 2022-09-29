@@ -7,14 +7,14 @@ module Authors
     end
 
     def call
-      if authorized?
-        prepare_params
-        contract_call = Authors::UpdateContract.new.call(params)
-        if contract_call.failure?
-          errors << contract_call.errors.to_h
-        else
-          create_author
-        end
+      return unless authorized?
+
+      prepare_params
+      contract_call = Authors::UpdateContract.new.call(params)
+      if contract_call.failure?
+        errors << contract_call.errors.to_h
+      else
+        create_author
       end
     end
 
