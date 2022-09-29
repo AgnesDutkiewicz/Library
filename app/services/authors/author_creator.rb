@@ -7,37 +7,42 @@ module Authors
     end
 
     def call
-      if user.nil?
-        @errors << { user: 'must be present' }
-      elsif user.admin? == false
-        @errors << { user: 'must be admin' }
-      else
+      if authorized?
         prepare_params
-        contract = Authors::UpdateContract.new
-        contract_call = contract.call(params)
+        contract_call = Authors::UpdateContract.new.call(params)
         if contract_call.failure?
-          @errors << contract_call.errors.to_h
+          errors << contract_call.errors.to_h
         else
           create_author
         end
       end
     end
 
-    def success?(call_result)
-      call_result.is_a?(Author)
+    def success?
+      !failure?
     end
 
-    def failure?(call_result)
-      call_result == @errors
+    def failure?
+      errors.present?
     end
 
     def error_messages
-      puts @errors
+      errors
     end
 
     private
 
-    attr_reader :params, :user
+    attr_reader :params, :user, :errors
+
+    def authorized?
+      if user.nil?
+        errors << { user: 'must be present' }
+      elsif user.admin? == false
+        errors << { user: 'must be admin' }
+      else
+        true
+      end
+    end
 
     def prepare_params
       params[:birth_date] = DateTime.new(params['birth_date(1i)'].to_i, params['birth_date(2i)'].to_i,
@@ -45,7 +50,7 @@ module Authors
     end
 
     def create_author
-      @author = Author.create(**params)
+      Author.create(**params)
     end
   end
 end
