@@ -16,14 +16,15 @@ class AuthorsController < ApplicationController
   end
 
   def create
-    @result = Authors::AuthorCreator.call(author_params.to_h)
-    if @result.is_a? Array
-      @errors = @result
+    service_object = Authors::AuthorCreator.new(current_user, author_params.to_h)
+    service_object.call
+    if service_object.success?
+      @author = service_object.call
+      redirect_to @author, notice: 'Author successfully created!'
+    else
+      service_object.error_messages
       @author = Author.new
       render :new
-    else
-      @author = @result
-      redirect_to @author, notice: 'Author successfully created!'
     end
   end
 
