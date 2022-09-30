@@ -16,14 +16,14 @@ describe Authors::UpdateContract do
   end
 
   context '#birth_date' do
+    it { expect(create_object.call({ birth_date: '' }).errors[:birth_date].present?).to eq true }
+    it { expect(create_object.call({ birth_date: nil }).errors[:birth_date].present?).to eq true }
     it { expect(create_object.call({ birth_date: 9999 }).errors[:birth_date].present?).to eq true }
     it { expect(create_object.call({ birth_date: 'Wojtek' }).errors[:birth_date].present?).to eq true }
     it { expect(create_object.call({ birth_date: Time.now }).errors[:birth_date].present?).to eq true }
     it { expect(create_object.call({ birth_date: [] }).errors[:birth_date].present?).to eq true }
     it { expect(create_object.call({ birth_date: [DateTime.now] }).errors[:birth_date].present?).to eq true }
     it { expect(create_object.call({}).errors[:birth_date].present?).to eq false }
-    it { expect(create_object.call({ birth_date: '' }).errors[:birth_date].present?).to eq false }
-    it { expect(create_object.call({ birth_date: nil }).errors[:birth_date].present?).to eq false }
     it { expect(create_object.call({ birth_date: DateTime.now }).errors[:birth_date].present?).to eq false }
   end
 end
