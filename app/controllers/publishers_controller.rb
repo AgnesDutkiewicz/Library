@@ -15,10 +15,13 @@ class PublishersController < ApplicationController
   end
 
   def create
-    @publisher = Publishers::PublisherCreator.call(publisher_params.to_h)
-    if @publisher
+    service_object = Publishers::PublisherCreator.new(current_user, publisher_params.to_h)
+    service_object.call
+    if service_object.success?
+      @publisher = service_object.call
       redirect_to @publisher, notice: 'Publisher successfully created!'
     else
+      service_object.error_messages
       @publisher = Publisher.new
       render :new
     end
