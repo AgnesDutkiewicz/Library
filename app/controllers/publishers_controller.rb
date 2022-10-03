@@ -33,7 +33,7 @@ class PublishersController < ApplicationController
 
   def update
     @publisher = Publisher.find(params[:id])
-    Publishers::PublisherEditor.call(@publisher, publisher_params.to_h)
+    Publishers::PublisherEditor.new(@publisher, publisher_params.to_h).call
     if @publisher
       redirect_to @publisher, notice: 'Publisher successfully updated!'
     else

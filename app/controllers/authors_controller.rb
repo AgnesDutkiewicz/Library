@@ -34,7 +34,7 @@ class AuthorsController < ApplicationController
 
   def update
     @author = Author.find(params[:id])
-    @result = Authors::AuthorEditor.call(@author, author_params.to_h)
+    @result = Authors::AuthorEditor.new(@author, author_params.to_h).call
     if @result.is_a? Array
       @errors = @result
       render :edit
