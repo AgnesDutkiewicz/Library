@@ -52,7 +52,7 @@ describe 'Editing publisher' do
 
       expect do
         click_button 'Update Publisher'
-      end.not_to change(Publisher, :name)
+      end.not_to change(publisher, :name)
     end
   end
 end

@@ -33,10 +33,12 @@ class PublishersController < ApplicationController
 
   def update
     @publisher = Publisher.find(params[:id])
-    Publishers::PublisherEditor.new(@publisher, publisher_params.to_h).call
-    if @publisher
+    service_object = Publishers::PublisherEditor.new(current_user, @publisher, publisher_params.to_h)
+    service_object.call
+    if service_object.success?
       redirect_to @publisher, notice: 'Publisher successfully updated!'
     else
+      service_object.error_messages
       render :edit
     end
   end

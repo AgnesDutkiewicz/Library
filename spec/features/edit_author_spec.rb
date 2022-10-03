@@ -54,7 +54,7 @@ describe 'Editing author' do
 
       expect do
         click_button 'Update Author'
-      end.not_to change(Author, :name)
+      end.not_to change(author, :name)
     end
   end
 end

@@ -34,12 +34,13 @@ class AuthorsController < ApplicationController
 
   def update
     @author = Author.find(params[:id])
-    @result = Authors::AuthorEditor.new(@author, author_params.to_h).call
-    if @result.is_a? Array
-      @errors = @result
-      render :edit
-    else
+    service_object = Authors::AuthorEditor.new(current_user, @author, author_params.to_h)
+    service_object.call
+    if service_object.success?
       redirect_to @author, notice: 'Author successfully updated!'
+    else
+      service_object.error_messages
+      render :edit
     end
   end
 
