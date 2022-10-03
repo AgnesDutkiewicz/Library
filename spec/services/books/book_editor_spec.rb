@@ -1,15 +1,15 @@
 require 'rails_helper'
 
-RSpec.describe Books::BookCreator, type: :model do
+RSpec.describe Books::BookEditor, type: :model do
   describe '.call' do
     let!(:user) { create :user, admin: false }
     let!(:admin) { create :user, admin: true }
-    let!(:author) { create :author }
+    let!(:book) { create :book_with_author }
 
     context 'when user is not signed in' do
       params = { 'title' => 'Book title', 'author_ids' => ['', '1'], 'publisher_id' => '1',
                  'publication_date(1i)' => '2022', 'publication_date(2i)' => '9', 'publication_date(3i)' => '30' }
-      subject(:object) { Books::BookCreator.new(nil, params) }
+      subject(:object) { Books::BookEditor.new(nil, book, params) }
 
       it "returns 'user must be present' error message" do
         object.call
@@ -21,7 +21,7 @@ RSpec.describe Books::BookCreator, type: :model do
     context 'when user is not an admin' do
       params = { 'title' => 'Book title', 'author_ids' => ['', '1'], 'publisher_id' => '1',
                  'publication_date(1i)' => '2022', 'publication_date(2i)' => '9', 'publication_date(3i)' => '30' }
-      subject(:object) { Books::BookCreator.new(user, params) }
+      subject(:object) { Books::BookEditor.new(user, book, params) }
 
       it "returns 'user must be an admin' error message" do
         object.call
@@ -31,40 +31,41 @@ RSpec.describe Books::BookCreator, type: :model do
     end
 
     context 'when user is admin' do
-      context "and params doesn't pass book's title" do
-        params = { 'author_ids' => ['', '1'], 'publisher_id' => '1',
+      context "and book's title is changed to blank" do
+        params = { 'title' => '', 'author_ids' => ['', '1'], 'publisher_id' => '1',
                    'publication_date(1i)' => '2022', 'publication_date(2i)' => '9', 'publication_date(3i)' => '30' }
-        subject(:object) { Books::BookCreator.new(admin, params) }
+        subject(:object) { Books::BookEditor.new(admin, book, params) }
 
-        it "returns 'title is missing' error message" do
-          expect(object.call).to eq [{ title: ['is missing'] }]
+        it "returns 'title must be filled' error message" do
+          expect(object.call).to eq [{ title: ['must be filled'] }]
         end
       end
 
-      context "and params doesn't pass book's author_ids" do
-        params = { 'title' => 'Book title', 'publisher_id' => '1',
+      context "and book's author_ids is changed to blank" do
+        params = { 'title' => 'Book title', 'author_ids' => [''], 'publisher_id' => '1',
                    'publication_date(1i)' => '2022', 'publication_date(2i)' => '9', 'publication_date(3i)' => '30' }
-        subject(:object) { Books::BookCreator.new(admin, params) }
+        subject(:object) { Books::BookEditor.new(admin, book, params) }
 
-        it "returns 'author_ids is missing' error message" do
-          expect(object.call).to eq [{ author_ids: ['is missing'] }]
+        it "returns 'author_ids must be filled' error message" do
+          expect(object.call).to eq [{ author_ids: ['must be filled'] }]
         end
       end
 
-      context "and params doesn't pass book's publisher_id" do
-        params = { 'title' => 'Book title', 'author_ids' => ['', '1'], 'publication_date(1i)' => '2022',
-                   'publication_date(2i)' => '9', 'publication_date(3i)' => '30' }
-        subject(:object) { Books::BookCreator.new(admin, params) }
+      context "and book's publisher_id is changed to '' " do
+        params = { 'title' => 'Book title', 'author_ids' => ['', '1'], 'publisher_id' => '',
+                   'publication_date(1i)' => '2022', 'publication_date(2i)' => '9', 'publication_date(3i)' => '30' }
+        subject(:object) { Books::BookEditor.new(admin, book, params) }
 
-        it "returns 'publisher_id is missing' error message" do
-          expect(object.call).to eq [{ publisher_id: ['is missing'] }]
+        it "returns 'publisher_id must be an integer' error message" do
+          expect(object.call).to eq [{ publisher_id: ['must be an integer'] }]
         end
       end
 
-      context "and params doesn't pass book's publication_date" do
-        params = { 'title' => 'Book title', 'author_ids' => ['', '1'], 'publisher_id' => '1' }
-        it 'successfully creates book' do
-          book = Books::BookCreator.new(admin, params).call
+      context "and book's publication_date is changed to blank" do
+        params = { 'title' => 'Book title', 'author_ids' => ['', '1'], 'publisher_id' => '1',
+                   'publication_date(1i)' => '', 'publication_date(2i)' => '', 'publication_date(3i)' => '' }
+        it "successfully updates book's publication_date" do
+          Books::BookEditor.new(admin, book, params).call
 
           expect(book.title).to eq('Book title')
           expect(book.author_ids).to eq([1])
@@ -77,8 +78,8 @@ RSpec.describe Books::BookCreator, type: :model do
         params = { 'title' => 'Book title', 'author_ids' => ['', '1'], 'publisher_id' => '1',
                    'publication_date(1i)' => '2022', 'publication_date(2i)' => '9', 'publication_date(3i)' => '30' }
 
-        it 'successfully creates book' do
-          book = Books::BookCreator.new(admin, params).call
+        it 'successfully updates book' do
+          Books::BookEditor.new(admin, book, params).call
 
           expect(book.title).to eq('Book title')
           expect(book.author_ids).to eq([1])

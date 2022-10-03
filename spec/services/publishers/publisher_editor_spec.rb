@@ -1,13 +1,14 @@
 require 'rails_helper'
 
-RSpec.describe Publishers::PublisherCreator, type: :model do
+RSpec.describe Publishers::PublisherEditor, type: :model do
   describe '.call' do
     let!(:user) { create :user, admin: false }
     let!(:admin) { create :user, admin: true }
+    let!(:publisher) { create :publisher }
 
     context 'when user is not signed in' do
       params = { 'name' => 'Publisher name', 'origin' => 'Publisher country' }
-      subject(:object) { Publishers::PublisherCreator.new(nil, params) }
+      subject(:object) { Publishers::PublisherEditor.new(nil, publisher, params) }
 
       it "returns 'user must be present' error message" do
         object.call
@@ -18,7 +19,7 @@ RSpec.describe Publishers::PublisherCreator, type: :model do
 
     context 'when user is not an admin' do
       params = { 'name' => 'Publisher name', 'origin' => 'Publisher country' }
-      subject(:object) { Publishers::PublisherCreator.new(user, params) }
+      subject(:object) { Publishers::PublisherEditor.new(user, publisher, params) }
 
       it "returns 'user must be an admin' error message" do
         object.call
@@ -29,29 +30,28 @@ RSpec.describe Publishers::PublisherCreator, type: :model do
 
     context 'when user is admin' do
       context "and params doesn't pass publisher's name" do
-        params = { 'origin' => 'Publisher country' }
-        subject(:object) { Publishers::PublisherCreator.new(admin, params) }
+        params = { 'name' => '', 'origin' => 'Publisher country' }
+        subject(:object) { Publishers::PublisherEditor.new(admin, publisher, params) }
 
-        it "returns 'name is missing' error message" do
-          expect(object.call).to eq [{ name: ['is missing'] }]
+        it "returns 'name must be filled' error message" do
+          expect(object.call).to eq [{ name: ['must be filled'] }]
         end
       end
 
       context "and params doesn't pass publisher's origin country" do
-        params = { 'name' => 'Publisher name' }
-        it 'successfully creates publisher' do
-          publisher = Publishers::PublisherCreator.new(admin, params).call
+        params = { 'name' => 'Publisher name', 'origin' => '' }
+        it "successfully updates publisher's origin county" do
+          Publishers::PublisherEditor.new(admin, publisher, params).call
 
-          expect(publisher.name).to eq('Publisher name')
-          expect(publisher.origin).to eq(nil)
+          expect(publisher.origin).to eq('')
         end
       end
 
       context "and params pass publisher's name and birth_date" do
         params = { 'name' => 'Publisher name', 'origin' => 'Publisher country' }
 
-        it 'successfully creates publisher' do
-          publisher = Publishers::PublisherCreator.new(admin, params).call
+        it 'successfully updates publisher' do
+          Publishers::PublisherEditor.new(admin, publisher, params).call
 
           expect(publisher.name).to eq('Publisher name')
           expect(publisher.origin).to eq('Publisher country')

@@ -1,14 +1,15 @@
 require 'rails_helper'
 
-RSpec.describe Authors::AuthorCreator, type: :model do
+RSpec.describe Authors::AuthorEditor, type: :model do
   describe '.call' do
     let!(:user) { create :user, admin: false }
     let!(:admin) { create :user, admin: true }
+    let!(:author) { create :author }
 
     context 'when user is not signed in' do
       params = { 'name' => 'Agatha Christie', 'birth_date(1i)' => '2022', 'birth_date(2i)' => '9',
                  'birth_date(3i)' => '29' }
-      subject(:object) { Authors::AuthorCreator.new(nil, params) }
+      subject(:object) { Authors::AuthorEditor.new(nil, author, params) }
 
       it "returns 'user must be present' error message" do
         object.call
@@ -20,7 +21,7 @@ RSpec.describe Authors::AuthorCreator, type: :model do
     context 'when user is not an admin' do
       params = { 'name' => 'Agatha Christie', 'birth_date(1i)' => '2022', 'birth_date(2i)' => '9',
                  'birth_date(3i)' => '29' }
-      subject(:object) { Authors::AuthorCreator.new(user, params) }
+      subject(:object) { Authors::AuthorEditor.new(user, author, params) }
 
       it "returns 'user must be an admin' error message" do
         object.call
@@ -30,22 +31,21 @@ RSpec.describe Authors::AuthorCreator, type: :model do
     end
 
     context 'when user is admin' do
-      context "and params doesn't pass author's name" do
-        params = { 'birth_date(1i)' => '2022', 'birth_date(2i)' => '9',
-                   'birth_date(3i)' => '29' }
-        subject(:object) { Authors::AuthorCreator.new(admin, params) }
+      context "and author's name is changed to blank" do
+        params = { 'name' => '' }
+        subject(:object) { Authors::AuthorEditor.new(admin, author, params) }
 
-        it "returns 'name is missing' error message" do
-          expect(object.call).to eq [{ name: ['is missing'] }]
+        it "returns 'name must be filled' error message" do
+          expect(object.call).to eq [{ name: ['must be filled'] }]
         end
       end
 
-      context "and params doesn't pass author's birth_date" do
-        params = { 'name' => 'Agatha Christie' }
-        it 'successfully creates author' do
-          author = Authors::AuthorCreator.new(admin, params).call
+      context "and author's birth_date is changed to blank" do
+        params = { 'name' => 'Agatha Christie', 'birth_date(1i)' => '', 'birth_date(2i)' => '',
+                   'birth_date(3i)' => '' }
+        it "successfully updates author's birth_date" do
+          Authors::AuthorEditor.new(admin, author, params).call
 
-          expect(author.name).to eq('Agatha Christie')
           expect(author.birth_date).to eq(nil)
         end
       end
@@ -54,8 +54,8 @@ RSpec.describe Authors::AuthorCreator, type: :model do
         params = { 'name' => 'Agatha Christie', 'birth_date(1i)' => '2022', 'birth_date(2i)' => '9',
                    'birth_date(3i)' => '29' }
 
-        it 'successfully creates author' do
-          author = Authors::AuthorCreator.new(admin, params).call
+        it 'successfully updates author' do
+          Authors::AuthorEditor.new(admin, author, params).call
 
           expect(author.name).to eq('Agatha Christie')
           expect(author.birth_date).to eq('29/09/2022')
