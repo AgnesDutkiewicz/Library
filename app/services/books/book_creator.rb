@@ -18,31 +18,9 @@ module Books
       end
     end
 
-    def success?
-      !failure?
-    end
-
-    def failure?
-      errors.present?
-    end
-
-    def error_messages
-      errors
-    end
-
     private
 
     attr_reader :params, :user, :errors
-
-    def authorized?
-      if user.nil?
-        errors << { user: 'must be present' }
-      elsif user.admin? == false
-        errors << { user: 'must be an admin' }
-      else
-        true
-      end
-    end
 
     def prepare_params
       return unless params['author_ids'].present?
@@ -53,7 +31,8 @@ module Books
 
       params['publisher_id'] = params['publisher_id'].to_i
 
-      return unless params['publication_date(1i)'].present?
+      return unless params['publication_date(1i)'].present? && params['publication_date(2i)'].present? &&
+        params['publication_date(3i)'].present?
 
       params['publication_date'] =
         DateTime.new(params['publication_date(1i)'].to_i, params['publication_date(2i)'].to_i,

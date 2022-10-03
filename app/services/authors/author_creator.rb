@@ -18,34 +18,13 @@ module Authors
       end
     end
 
-    def success?
-      !failure?
-    end
-
-    def failure?
-      errors.present?
-    end
-
-    def error_messages
-      errors
-    end
-
     private
 
     attr_reader :params, :user, :errors
 
-    def authorized?
-      if user.nil?
-        errors << { user: 'must be present' }
-      elsif user.admin? == false
-        errors << { user: 'must be an admin' }
-      else
-        true
-      end
-    end
-
     def prepare_params
-      return unless params['birth_date(1i)'].present?
+      return unless params['birth_date(1i)'].present? && params['birth_date(2i)'].present? &&
+        params['birth_date(3i)'].present?
 
       params[:birth_date] = DateTime.new(params['birth_date(1i)'].to_i, params['birth_date(2i)'].to_i,
                                          params['birth_date(3i)'].to_i)

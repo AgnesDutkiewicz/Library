@@ -17,31 +17,9 @@ module Publishers
       end
     end
 
-    def success?
-      !failure?
-    end
-
-    def failure?
-      errors.present?
-    end
-
-    def error_messages
-      errors
-    end
-
     private
 
     attr_reader :params, :user, :errors
-
-    def authorized?
-      if user.nil?
-        errors << { user: 'must be present' }
-      elsif user.admin? == false
-        errors << { user: 'must be an admin' }
-      else
-        true
-      end
-    end
 
     def create_publisher
       Publisher.create(**params)
