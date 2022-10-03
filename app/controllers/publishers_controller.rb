@@ -16,9 +16,9 @@ class PublishersController < ApplicationController
 
   def create
     service_object = Publishers::PublisherCreator.new(current_user, publisher_params.to_h)
-    service_object.call
+    result = service_object.call
     if service_object.success?
-      @publisher = service_object.call
+      @publisher = result
       redirect_to @publisher, notice: 'Publisher successfully created!'
     else
       service_object.error_messages
