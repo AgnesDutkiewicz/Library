@@ -25,10 +25,13 @@ class BooksController < ApplicationController
   end
 
   def create
-    @book = Books::BookCreator.call(book_params.to_h)
-    if @book
+    service_object = Books::BookCreator.new(current_user, book_params.to_h)
+    result = service_object.call
+    if service_object.success?
+      @book = result
       redirect_to @book, notice: 'Book successfully created!'
     else
+      service_object.error_messages
       @book = Book.new
       render :new
     end
