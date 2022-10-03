@@ -38,13 +38,15 @@ module Authors
       if user.nil?
         errors << { user: 'must be present' }
       elsif user.admin? == false
-        errors << { user: 'must be admin' }
+        errors << { user: 'must be an admin' }
       else
         true
       end
     end
 
     def prepare_params
+      return unless params['birth_date(1i)'].present?
+
       params[:birth_date] = DateTime.new(params['birth_date(1i)'].to_i, params['birth_date(2i)'].to_i,
                                          params['birth_date(3i)'].to_i)
     end

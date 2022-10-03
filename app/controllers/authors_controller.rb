@@ -17,9 +17,9 @@ class AuthorsController < ApplicationController
 
   def create
     service_object = Authors::AuthorCreator.new(current_user, author_params.to_h)
-    service_object.call
+    result = service_object.call
     if service_object.success?
-      @author = service_object.call
+      @author = result
       redirect_to @author, notice: 'Author successfully created!'
     else
       service_object.error_messages
