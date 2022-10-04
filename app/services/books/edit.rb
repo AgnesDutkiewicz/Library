@@ -29,7 +29,7 @@ module Books
       return params['publisher_id'] = params['publisher_id'].to_i if params['publisher_id'].present?
 
       if params['publication_date(1i)'].present? && params['publication_date(2i)'].present? &&
-        params['publication_date(3i)'].present?
+         params['publication_date(3i)'].present?
         params['publication_date'] = DateTime.new(params['publication_date(1i)'].to_i,
                                                   params['publication_date(2i)'].to_i,
                                                   params['publication_date(3i)'].to_i)

@@ -25,7 +25,7 @@ module Authors
 
     def prepare_params
       if params['birth_date(1i)'].present? &&
-        params['birth_date(2i)'].present? && params['birth_date(3i)'].present?
+         params['birth_date(2i)'].present? && params['birth_date(3i)'].present?
         params['birth_date'] = DateTime.new(params['birth_date(1i)'].to_i, params['birth_date(2i)'].to_i,
                                             params['birth_date(3i)'].to_i)
       end

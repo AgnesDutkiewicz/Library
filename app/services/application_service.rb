@@ -13,7 +13,6 @@ class ApplicationService
 
   private
 
-
   def authorized?
     if user.nil?
       errors << { user: 'must be present' }

@@ -1,6 +1,5 @@
 RSpec.describe AuthorsController, type: :request do
   context 'when user is signed in' do
-
     describe '#index' do
       subject(:view_authors) { get '/authors' }
 
