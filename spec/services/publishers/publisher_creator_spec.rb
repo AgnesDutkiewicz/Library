@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe Publishers::PublisherCreator, type: :model do
+RSpec.describe Publishers::Create, type: :model do
   describe '.call' do
     let!(:user) { create :user, admin: false }
     let!(:admin) { create :user, admin: true }
 
     context 'when user is not signed in' do
       params = { 'name' => 'Publisher name', 'origin' => 'Publisher country' }
-      subject(:object) { Publishers::PublisherCreator.new(nil, params) }
+      subject(:object) { Publishers::Create.new(nil, params) }
 
       it "returns 'user must be present' error message" do
         object.call
@@ -18,7 +18,7 @@ RSpec.describe Publishers::PublisherCreator, type: :model do
 
     context 'when user is not an admin' do
       params = { 'name' => 'Publisher name', 'origin' => 'Publisher country' }
-      subject(:object) { Publishers::PublisherCreator.new(user, params) }
+      subject(:object) { Publishers::Create.new(user, params) }
 
       it "returns 'user must be an admin' error message" do
         object.call
@@ -30,7 +30,7 @@ RSpec.describe Publishers::PublisherCreator, type: :model do
     context 'when user is admin' do
       context "and params doesn't pass publisher's name" do
         params = { 'origin' => 'Publisher country' }
-        subject(:object) { Publishers::PublisherCreator.new(admin, params) }
+        subject(:object) { Publishers::Create.new(admin, params) }
 
         it "returns 'name is missing' error message" do
           expect(object.call).to eq [{ name: ['is missing'] }]
@@ -40,7 +40,7 @@ RSpec.describe Publishers::PublisherCreator, type: :model do
       context "and params doesn't pass publisher's origin country" do
         params = { 'name' => 'Publisher name' }
         it 'successfully creates publisher' do
-          publisher = Publishers::PublisherCreator.new(admin, params).call
+          publisher = Publishers::Create.new(admin, params).call
 
           expect(publisher.name).to eq('Publisher name')
           expect(publisher.origin).to eq(nil)
@@ -51,7 +51,7 @@ RSpec.describe Publishers::PublisherCreator, type: :model do
         params = { 'name' => 'Publisher name', 'origin' => 'Publisher country' }
 
         it 'successfully creates publisher' do
-          publisher = Publishers::PublisherCreator.new(admin, params).call
+          publisher = Publishers::Create.new(admin, params).call
 
           expect(publisher.name).to eq('Publisher name')
           expect(publisher.origin).to eq('Publisher country')

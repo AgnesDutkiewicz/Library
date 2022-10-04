@@ -25,7 +25,7 @@ class BooksController < ApplicationController
   end
 
   def create
-    service_object = Books::BookCreator.new(current_user, book_params.to_h)
+    service_object = Books::Create.new(current_user, book_params.to_h)
     result = service_object.call
     if service_object.success?
       @book = result
@@ -43,7 +43,7 @@ class BooksController < ApplicationController
 
   def update
     @book = Book.find(params[:id])
-    service_object = Books::BookEditor.new(current_user, @book, book_params.to_h)
+    service_object = Books::Edit.new(current_user, @book, book_params.to_h)
     service_object.call
     if service_object.success?
       redirect_to @book, notice: 'Book successfully updated!'

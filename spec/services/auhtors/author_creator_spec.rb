@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Authors::AuthorCreator, type: :model do
+RSpec.describe Authors::Create, type: :model do
   describe '.call' do
     let!(:user) { create :user, admin: false }
     let!(:admin) { create :user, admin: true }
@@ -8,7 +8,7 @@ RSpec.describe Authors::AuthorCreator, type: :model do
     context 'when user is not signed in' do
       params = { 'name' => 'Agatha Christie', 'birth_date(1i)' => '2022', 'birth_date(2i)' => '9',
                  'birth_date(3i)' => '29' }
-      subject(:object) { Authors::AuthorCreator.new(nil, params) }
+      subject(:object) { Authors::Create.new(nil, params) }
 
       it "returns 'user must be present' error message" do
         object.call
@@ -20,7 +20,7 @@ RSpec.describe Authors::AuthorCreator, type: :model do
     context 'when user is not an admin' do
       params = { 'name' => 'Agatha Christie', 'birth_date(1i)' => '2022', 'birth_date(2i)' => '9',
                  'birth_date(3i)' => '29' }
-      subject(:object) { Authors::AuthorCreator.new(user, params) }
+      subject(:object) { Authors::Create.new(user, params) }
 
       it "returns 'user must be an admin' error message" do
         object.call
@@ -33,7 +33,7 @@ RSpec.describe Authors::AuthorCreator, type: :model do
       context "and params doesn't pass author's name" do
         params = { 'birth_date(1i)' => '2022', 'birth_date(2i)' => '9',
                    'birth_date(3i)' => '29' }
-        subject(:object) { Authors::AuthorCreator.new(admin, params) }
+        subject(:object) { Authors::Create.new(admin, params) }
 
         it "returns 'name is missing' error message" do
           expect(object.call).to eq [{ name: ['is missing'] }]
@@ -43,7 +43,7 @@ RSpec.describe Authors::AuthorCreator, type: :model do
       context "and params doesn't pass author's birth_date" do
         params = { 'name' => 'Agatha Christie' }
         it 'successfully creates author' do
-          author = Authors::AuthorCreator.new(admin, params).call
+          author = Authors::Create.new(admin, params).call
 
           expect(author.name).to eq('Agatha Christie')
           expect(author.birth_date).to eq(nil)
@@ -55,7 +55,7 @@ RSpec.describe Authors::AuthorCreator, type: :model do
                    'birth_date(3i)' => '29' }
 
         it 'successfully creates author' do
-          author = Authors::AuthorCreator.new(admin, params).call
+          author = Authors::Create.new(admin, params).call
 
           expect(author.name).to eq('Agatha Christie')
           expect(author.birth_date).to eq('29/09/2022')

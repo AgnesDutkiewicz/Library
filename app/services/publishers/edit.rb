@@ -1,7 +1,8 @@
 module Publishers
-  class PublisherCreator < ApplicationService
-    def initialize(user, params)
+  class Edit < ApplicationService
+    def initialize(user, publisher, params)
       @user = user
+      @publisher = publisher
       @params = params
       @errors = []
     end
@@ -13,16 +14,16 @@ module Publishers
       if contract_call.failure?
         errors << contract_call.errors.to_h
       else
-        create_publisher
+        update_publisher
       end
     end
 
     private
 
-    attr_reader :params, :user, :errors
+    attr_reader :params, :user, :publisher, :errors
 
-    def create_publisher
-      Publisher.create(**params)
+    def update_publisher
+      publisher.update(**params)
     end
   end
 end

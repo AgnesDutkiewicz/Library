@@ -1,5 +1,5 @@
 module Authors
-  class AuthorCreator < ApplicationService
+  class Create < ApplicationService
     def initialize(user, params)
       @user = user
       @params = params
@@ -23,11 +23,11 @@ module Authors
     attr_reader :params, :user, :errors
 
     def prepare_params
-      return unless params['birth_date(1i)'].present? && params['birth_date(2i)'].present? &&
-        params['birth_date(3i)'].present?
-
-      params[:birth_date] = DateTime.new(params['birth_date(1i)'].to_i, params['birth_date(2i)'].to_i,
-                                         params['birth_date(3i)'].to_i)
+      if params['birth_date(1i)'].present? &&
+         params['birth_date(2i)'].present? && params['birth_date(3i)'].present?
+        params['birth_date'] = DateTime.new(params['birth_date(1i)'].to_i, params['birth_date(2i)'].to_i,
+                                           params['birth_date(3i)'].to_i)
+      end
     end
 
     def create_author

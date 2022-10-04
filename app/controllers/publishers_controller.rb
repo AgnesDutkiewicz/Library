@@ -15,7 +15,7 @@ class PublishersController < ApplicationController
   end
 
   def create
-    service_object = Publishers::PublisherCreator.new(current_user, publisher_params.to_h)
+    service_object = Publishers::Create.new(current_user, publisher_params.to_h)
     result = service_object.call
     if service_object.success?
       @publisher = result
@@ -33,7 +33,7 @@ class PublishersController < ApplicationController
 
   def update
     @publisher = Publisher.find(params[:id])
-    service_object = Publishers::PublisherEditor.new(current_user, @publisher, publisher_params.to_h)
+    service_object = Publishers::Edit.new(current_user, @publisher, publisher_params.to_h)
     service_object.call
     if service_object.success?
       redirect_to @publisher, notice: 'Publisher successfully updated!'
