@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Publishers::Edit, type: :model do
+RSpec.describe Publishers::Update, type: :model do
   describe '.call' do
     let!(:user) { create :user, admin: false }
     let!(:admin) { create :user, admin: true }
@@ -8,7 +8,7 @@ RSpec.describe Publishers::Edit, type: :model do
 
     context 'when user is not signed in' do
       params = { 'name' => 'Publisher name', 'origin' => 'Publisher country' }
-      subject(:object) { Publishers::Edit.new(nil, publisher, params) }
+      subject(:object) { Publishers::Update.new(nil, publisher, params) }
 
       it "returns 'user must be present' error message" do
         object.call
@@ -19,7 +19,7 @@ RSpec.describe Publishers::Edit, type: :model do
 
     context 'when user is not an admin' do
       params = { 'name' => 'Publisher name', 'origin' => 'Publisher country' }
-      subject(:object) { Publishers::Edit.new(user, publisher, params) }
+      subject(:object) { Publishers::Update.new(user, publisher, params) }
 
       it "returns 'user must be an admin' error message" do
         object.call
@@ -31,7 +31,7 @@ RSpec.describe Publishers::Edit, type: :model do
     context 'when user is admin' do
       context "and publisher's name is changed to blank" do
         params = { 'name' => '', 'origin' => 'Publisher country' }
-        subject(:object) { Publishers::Edit.new(admin, publisher, params) }
+        subject(:object) { Publishers::Update.new(admin, publisher, params) }
 
         it "returns 'name must be filled' error message" do
           expect(object.call).to eq [{ name: ['must be filled'] }]
@@ -41,7 +41,7 @@ RSpec.describe Publishers::Edit, type: :model do
       context "and publisher's origin country is changed to blank" do
         params = { 'name' => 'Publisher name', 'origin' => '' }
         it "successfully updates publisher's origin county" do
-          Publishers::Edit.new(admin, publisher, params).call
+          Publishers::Update.new(admin, publisher, params).call
 
           expect(publisher.origin).to eq('')
         end
@@ -51,7 +51,7 @@ RSpec.describe Publishers::Edit, type: :model do
         params = { 'name' => 'Publisher name', 'origin' => 'Publisher country' }
 
         it 'successfully updates publisher' do
-          Publishers::Edit.new(admin, publisher, params).call
+          Publishers::Update.new(admin, publisher, params).call
 
           expect(publisher.name).to eq('Publisher name')
           expect(publisher.origin).to eq('Publisher country')

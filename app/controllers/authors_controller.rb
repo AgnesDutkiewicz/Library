@@ -34,7 +34,7 @@ class AuthorsController < ApplicationController
 
   def update
     @author = Author.find(params[:id])
-    service_object = Authors::Edit.new(current_user, @author, author_params.to_h)
+    service_object = Authors::Update.new(current_user, @author, author_params.to_h)
     service_object.call
     if service_object.success?
       redirect_to @author, notice: 'Author successfully updated!'
