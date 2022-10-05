@@ -1,16 +1,20 @@
 class ApplicationController < ActionController::Base
+  include Pundit::Authorization
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   private
 
   def user_not_authorized
-    flash[:alert] = 'You are not authorized to perform this action.'
+    flash[:alert] = "You are not authorized to perform this action."
     redirect_back(fallback_location: root_path)
   end
 
   def require_sign_in
-    return if current_user
-
-    session[:intended_url] = request.url
-    redirect_to new_session_url, alert: 'Please sign in first!'
+    unless current_user
+      session[:intended_url] = request.url
+      redirect_to new_session_url, alert: 'Please sign in first!'
+    end
   end
 
   def require_admin
@@ -30,7 +34,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user?
 
   def current_user_admin?
-    current_user&.admin?
+    current_user && current_user.admin?
   end
 
   helper_method :current_user_admin?

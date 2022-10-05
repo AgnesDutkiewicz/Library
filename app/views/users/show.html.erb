@@ -30,9 +30,9 @@
       </p>
     <% end %>
   <% else %>
-   <p>
-     <%= content_tag(:strong, 'No borrowed books') %>
-   </p>
+    <p>
+      <%= content_tag(:strong, 'No borrowed books') %>
+    </p>
   <% end %>
 
   <% if @lost_books.any? %>
@@ -48,8 +48,6 @@
 <% end %>
 
 <p>
-  <% if current_user?(@user) %>
-    <%= link_to "Edit Account", edit_user_path(@user) %>
-    <%= link_to "Delete Account", user_path(@user), method: :delete, data: { confirm: 'Are you sure?' } %>
-  <% end %>
+  <%= link_to "Edit Account", edit_user_path(@user) if policy(@user).update? %>
+  <%= link_to "Delete Account", user_path(@user), method: :delete, data: { confirm: 'Are you sure?' } if policy(@user).destroy? %>
 </p>
