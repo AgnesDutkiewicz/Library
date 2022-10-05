@@ -18,7 +18,7 @@ module Users
 
     attr_reader :params, :errors
 
-    def create_author
+    def create_user
       User.create(**params)
     end
   end

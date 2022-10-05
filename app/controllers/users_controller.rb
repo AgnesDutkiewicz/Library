@@ -24,7 +24,7 @@ class UsersController < ApplicationController
       session[:user_id] = @user.id
       redirect_to @user, notice: 'Thanks for signing up!'
     else
-      service_object.error_messages
+      puts service_object.error_messages
       @user = User.new
       render :new
     end
@@ -38,10 +38,11 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     service_object = Users::Update.new(current_user, @user, user_params.to_h)
     service_object.call
+    puts service_object.success?
     if service_object.success?
       redirect_to @user, notice: 'Account successfully updated!'
     else
-      service_object.error_messages
+      puts service_object.error_messages
       render :edit
     end
   end
