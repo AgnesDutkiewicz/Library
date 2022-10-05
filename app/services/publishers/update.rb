@@ -1,5 +1,5 @@
 module Publishers
-  class Edit < ApplicationService
+  class Update < ApplicationService
     def initialize(user, publisher, params)
       @user = user
       @publisher = publisher
