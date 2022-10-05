@@ -10,7 +10,6 @@ module Users
     def call
       return unless authorized?
 
-      prepare_params
       contract_call = Users::UpdateContract.new.call(params)
       if contract_call.failure?
         errors << contract_call.errors.to_h
@@ -24,9 +23,9 @@ module Users
     attr_reader :params, :current_user, :user, :errors
 
     def authorized?
-      if user.nil?
+      if current_user.nil?
         errors << { user: 'must be present' }
-      elsif current_user == !user || user.admin? == false
+      elsif current_user != user && current_user.admin? == false
         errors << { user: 'cant update another user' }
       else
         true
