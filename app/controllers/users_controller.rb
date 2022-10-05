@@ -1,13 +1,13 @@
 class UsersController < ApplicationController
-  before_action :require_sign_in, except: [:new, :create]
-  before_action :require_correct_user, only: [:edit, :update, :destroy]
 
   def index
     @users = User.all
+    authorize @users
   end
 
   def show
     @user = User.find(params[:id])
+    authorize @user
     @reservations = @user.reservations.reserved
     @borrowed_books = @user.reservations.borrowed
     @lost_books = @user.reservations.lost
@@ -33,9 +33,13 @@ class UsersController < ApplicationController
     end
   end
 
-  def edit; end
+  def edit
+    @user = User.find(params[:id])
+  end
 
   def update
+    @user = User.find(params[:id])
+    authorize @user
     contract = Users::UpdateContract.new
     result = contract.call(user_params.to_h)
     if result.success?
@@ -50,17 +54,14 @@ class UsersController < ApplicationController
   end
 
   def destroy
+    @user = User.find(params[:id])
+    authorize(@user)
     @user.destroy
     session[:user_id] = nil
     redirect_to root_url, alert: 'Account successfully deleted!'
   end
 
   private
-
-  def require_correct_user
-    @user = User.find(params[:id])
-    redirect_to root_url unless current_user?(@user)
-  end
 
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation)
