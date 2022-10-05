@@ -4,6 +4,7 @@ module Users
       required(:name).filled(:string)
       required(:email).filled(:string)
       required(:password).filled(:string)
+      optional(:admin).value(:bool)
     end
 
     rule(:email) do
