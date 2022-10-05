@@ -4,7 +4,7 @@ module Users
       required(:name).filled(:string)
       required(:email).filled(:string)
       required(:password_digest).filled(:string)
-      required(:admin).value(:false)
+      required(:admin).value(false)
     end
 
     rule(:email) do

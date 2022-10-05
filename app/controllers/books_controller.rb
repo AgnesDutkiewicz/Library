@@ -9,15 +9,11 @@ class BooksController < ApplicationController
   def show
     @book = Book.find(params[:id])
     @authors = @book.authors
-    if current_user
-      if @book.reservations.reserved.first
-        @current_reservation = @book.reservations.reserved.first
-      elsif @book.reservations.borrowed.first
-        @current_reservation = @book.reservations.borrowed.first
-      elsif @book.reservations.lost.first
-        @book_lost = true
-      end
-    end
+    return unless current_user
+
+    @current_reservation = @book.reservations.reserved.first || @book.reservations.borrowed.first
+
+    @book_lost = true if @book.reservations.lost.first
   end
 
   def new
