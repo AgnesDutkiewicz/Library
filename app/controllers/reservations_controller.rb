@@ -12,13 +12,13 @@ class ReservationsController < ApplicationController
   end
 
   def create
-    contract = Reservations::CreateContract.new
-    result = contract.call(reservation_params.to_h)
-    if result.success?
-      @book.reservations.create!(user: current_user)
+    service_object = Reservations::Create.new(current_user, reservation_params.to_h)
+    result = service_object.call
+    if service_object.success?
+      @reservation = result
       redirect_to user_path(current_user), notice: 'Book reserved!'
     else
-      puts result.errors.to_h
+      service_object.error_messages
     end
   end
 
@@ -27,9 +27,9 @@ class ReservationsController < ApplicationController
   end
 
   def update
-    contract = Reservations::UpdateContract.new
-    result = contract.call(reservation_params.to_h)
-    if result.success?
+    service_object = Reservations::Update.new(current_user, reservation_params.to_h)
+    result = service_object.call
+    if service_object.success?
       @reservation = Reservation.find(params[:id])
       if @reservation.update(reservation_params)
         redirect_to book_path(@book), notice: 'Reservation Changed'
@@ -48,6 +48,6 @@ class ReservationsController < ApplicationController
   end
 
   def reservation_params
-    params.require(:reservation).permit(:return_date, :status)
+    params.require(:reservation).permit(:book_id, :user_id, :return_date, :status)
   end
 end
