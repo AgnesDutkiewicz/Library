@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-
   def index
     @users = User.all
     authorize @users
@@ -18,18 +17,16 @@ class UsersController < ApplicationController
   end
 
   def create
-    contract = Users::CreateContract.new
-    result = contract.call(user_params.to_h)
-    if result.success?
-      @user = User.new(user_params)
-      if @user.save
-        session[:user_id] = @user.id
-        redirect_to @user, notice: 'Thanks for signing up!'
-      else
-        render :new
-      end
+    service_object = Users::Create.new(user_params.to_h)
+    result = service_object.call
+    if service_object.success?
+      @user = result
+      session[:user_id] = @user.id
+      redirect_to @user, notice: 'Thanks for signing up!'
     else
-      result.errors.to_h
+      service_object.error_messages
+      @user = User.new
+      render :new
     end
   end
 
@@ -39,17 +36,13 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    authorize @user
-    contract = Users::UpdateContract.new
-    result = contract.call(user_params.to_h)
-    if result.success?
-      if @user.update(user_params)
-        redirect_to @user, notice: 'Account successfully updated!'
-      else
-        render :edit
-      end
+    service_object = Users::Update.new(current_user, @user, user_params.to_h)
+    service_object.call
+    if service_object.success?
+      redirect_to @user, notice: 'Account successfully updated!'
     else
-      puts result.errors.to_h
+      service_object.error_messages
+      render :edit
     end
   end
 
