@@ -1,5 +1,5 @@
 module Authors
-  class Edit < ApplicationService
+  class Update < ApplicationService
     def initialize(user, author, params)
       @user = user
       @author = author

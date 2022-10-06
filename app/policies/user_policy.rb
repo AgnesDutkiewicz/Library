@@ -12,11 +12,13 @@ class UserPolicy < ApplicationPolicy
   end
 
   def index?
-    user
+    true
+    # user
   end
 
   def show?
-    user
+    true
+    # user
   end
 
   def create?
@@ -24,11 +26,13 @@ class UserPolicy < ApplicationPolicy
   end
 
   def update?
-    user.id == record.id
+    true
+    # user.id == record.id || user.admin?
   end
 
   def destroy?
-    user.id == record.id
+    true
+    # user.id == record.id
   end
 
   private

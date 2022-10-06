@@ -31,25 +31,14 @@ describe Users::UpdateContract do
     it { expect(create_object.call({ email: 'agnes@example.com' }).errors[:email].present?).to eq false }
   end
 
-  context '#password_digest' do
-    it { expect(create_object.call({ password_digest: '' }).errors[:password_digest].present?).to eq true }
-    it { expect(create_object.call({ password_digest: nil }).errors[:password_digest].present?).to eq true }
-    it { expect(create_object.call({}).errors[:password_digest].present?).to eq true }
-    it { expect(create_object.call({ password_digest: 777 }).errors[:password_digest].present?).to eq true }
-    it { expect(create_object.call({ password_digest: Time.now }).errors[:password_digest].present?).to eq true }
-    it { expect(create_object.call({ password_digest: [] }).errors[:password_digest].present?).to eq true }
-    it { expect(create_object.call({ password_digest: ['Luiza'] }).errors[:password_digest].present?).to eq true }
-    it { expect(create_object.call({ password_digest: 'dadadas' }).errors[:password_digest].present?).to eq false }
-  end
-
   context '#admin' do
     it { expect(create_object.call({ admin: '' }).errors[:admin].present?).to eq true }
     it { expect(create_object.call({ admin: nil }).errors[:admin].present?).to eq true }
-    it { expect(create_object.call({}).errors[:admin].present?).to eq true }
     it { expect(create_object.call({ admin: 777 }).errors[:admin].present?).to eq true }
     it { expect(create_object.call({ admin: Time.now }).errors[:admin].present?).to eq true }
     it { expect(create_object.call({ admin: [] }).errors[:admin].present?).to eq true }
     it { expect(create_object.call({ admin: ['Luiza'] }).errors[:admin].present?).to eq true }
+    it { expect(create_object.call({}).errors[:admin].present?).to eq false }
     it { expect(create_object.call({ admin: true }).errors[:admin].present?).to eq false }
     it { expect(create_object.call({ admin: false }).errors[:admin].present?).to eq false }
   end

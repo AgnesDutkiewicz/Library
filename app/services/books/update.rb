@@ -1,5 +1,5 @@
 module Books
-  class Edit < ApplicationService
+  class Update < ApplicationService
     def initialize(user, book, params)
       @user = user
       @book = book

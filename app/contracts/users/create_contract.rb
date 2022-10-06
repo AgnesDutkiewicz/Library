@@ -3,8 +3,8 @@ module Users
     params do
       required(:name).filled(:string)
       required(:email).filled(:string)
-      required(:password_digest).filled(:string)
-      required(:admin).value(false)
+      required(:password).filled(:string)
+      optional(:admin).value(:bool)
     end
 
     rule(:email) do
