@@ -50,4 +50,8 @@ class ApplicationPolicy
 
     attr_reader :user, :scope
   end
+
+  def user_admin?
+    user&.user.admin?
+  end
 end

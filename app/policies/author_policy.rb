@@ -13,7 +13,7 @@ class AuthorPolicy < ApplicationPolicy
   alias show? index?
 
   def create?
-    user.admin?
+    user_admin?
   end
 
   alias update? create?
