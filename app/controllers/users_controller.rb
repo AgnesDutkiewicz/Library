@@ -32,10 +32,12 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
+    authorize @user
   end
 
   def update
     @user = User.find(params[:id])
+    authorize @user
     service_object = Users::Update.new(current_user, @user, user_params.to_h)
     service_object.call
     puts service_object.success?
@@ -49,7 +51,7 @@ class UsersController < ApplicationController
 
   def destroy
     @user = User.find(params[:id])
-    authorize(@user)
+    authorize @user
     @user.destroy
     session[:user_id] = nil
     redirect_to root_url, alert: 'Account successfully deleted!'
