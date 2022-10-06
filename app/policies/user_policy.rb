@@ -6,36 +6,30 @@ class UserPolicy < ApplicationPolicy
     # end
   end
 
-  def initialize(user, record)
+  def initialize(current_user, user)
+    @current_user = current_user
     @user = user
-    @record = record
   end
 
   def index?
-    true
-    # user
+    current_user
   end
 
   def show?
-    true
-    # user
+    current_user.id == user.id || current_user.admin?
   end
 
   def create?
     true
   end
 
-  def update?
-    true
-    # user.id == record.id || user.admin?
-  end
+  alias edit? show?
 
-  def destroy?
-    true
-    # user.id == record.id
-  end
+  alias update? show?
+
+  alias destroy? show?
 
   private
 
-  attr_reader :user, :record
+  attr_reader :current_user, :user
 end
