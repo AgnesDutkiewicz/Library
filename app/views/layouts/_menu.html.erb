@@ -12,7 +12,5 @@
   <%= link_to "Books", books_path %>
   <%= link_to "Publishers", publishers_path %>
   <%= link_to "Users", users_path %>
-  <% if current_user_admin? %>
-    <%= link_to "Reservations", reservations_path %>
-  <% end %>
+  <%= link_to "Reservations", reservations_path %>
 </p>

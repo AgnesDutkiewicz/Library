@@ -8,4 +8,4 @@
     <%= @reservation.status %>
 </p>
 
-<%= button_to "Change Reservation", edit_book_reservation_path(@reservation.book, @reservation), method: :get %>
+<%= button_to "Change Reservation", edit_book_reservation_path(@reservation.book, @reservation), method: :get if policy(Reservation).update? %>

@@ -52,6 +52,10 @@ class ApplicationPolicy
   end
 
   def user_admin?
-    user&.user.admin?
+    if user.nil?
+      false
+    elsif user.admin?
+      true
+    end
   end
 end

@@ -1,18 +1,19 @@
 class ReservationsController < ApplicationController
-  before_action :require_sign_in
-  before_action :require_admin, except: [:create]
   before_action :set_book, except: [:index, :show]
 
   def index
-    @reservations = Reservation.all
+    @reservations = policy_scope(Reservation)
+    authorize @reservations
   end
 
   def show
-    @reservation = Reservation.find(params[:id])
+    @reservation = policy_scope(Reservation)
+    authorize @reservation
   end
 
   def create
-    # @book.reservations.new
+    @reservation = @book.reservations.new
+    authorize @reservation
     service_object = Reservations::Create.new(current_user, @book)
     result = service_object.call
     if service_object.success?
@@ -26,10 +27,12 @@ class ReservationsController < ApplicationController
 
   def edit
     @reservation = Reservation.find(params[:id])
+    authorize @reservation
   end
 
   def update
     @reservation = Reservation.find(params[:id])
+    authorize @reservation
     service_object = Reservations::Update.new(current_user, @reservation, reservation_params.to_h)
     result = service_object.call
     if service_object.success?
