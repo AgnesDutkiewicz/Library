@@ -1,13 +1,13 @@
 class BooksController < ApplicationController
-  before_action :require_sign_in, except: [:index, :show]
-  before_action :require_admin, except: [:index, :show]
 
   def index
     @books = Book.all
+    authorize @books
   end
 
   def show
     @book = Book.find(params[:id])
+    authorize @book
     @authors = @book.authors
     return unless current_user
 
@@ -18,9 +18,12 @@ class BooksController < ApplicationController
 
   def new
     @book = Book.new
+    authorize @book
   end
 
   def create
+    @book = Book.new
+    authorize @book
     service_object = Books::Create.new(current_user, book_params.to_h)
     result = service_object.call
     if service_object.success?
@@ -28,17 +31,18 @@ class BooksController < ApplicationController
       redirect_to @book, notice: 'Book successfully created!'
     else
       service_object.error_messages
-      @book = Book.new
       render :new
     end
   end
 
   def edit
     @book = Book.find(params[:id])
+    authorize @book
   end
 
   def update
     @book = Book.find(params[:id])
+    authorize @book
     service_object = Books::Update.new(current_user, @book, book_params.to_h)
     service_object.call
     if service_object.success?
@@ -51,6 +55,7 @@ class BooksController < ApplicationController
 
   def destroy
     @book = Book.find(params[:id])
+    authorize @book
     @book.destroy
     redirect_to books_url, alert: 'Book successfully deleted!'
   end
