@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe Users::Create, type: :model do
   describe '.call' do
-
     context "when params doesnt pass user's name" do
       params = { 'email' => 'lucas@example.com', 'password' => 'secret' }
       subject(:object) { Users::Create.new(params) }

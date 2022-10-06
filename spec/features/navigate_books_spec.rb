@@ -25,9 +25,9 @@ describe 'Navigating books' do
     it "allows navigation to book's author" do
       visit book_url(book)
 
-      click_link book.authors.name
+      click_link 'John Tolkien'
 
-      expect(current_path).to eq(authors_path)
+      expect(current_path).to eq(author_path(book.authors.first))
     end
 
     it "allows navigation to book's publisher" do
