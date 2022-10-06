@@ -1,5 +1,4 @@
 class BooksController < ApplicationController
-
   def index
     @books = Book.all
     authorize @books
@@ -12,7 +11,6 @@ class BooksController < ApplicationController
     return unless current_user
 
     @current_reservation = @book.reservations.reserved.first || @book.reservations.borrowed.first
-
     @book_lost = true if @book.reservations.lost.first
   end
 
