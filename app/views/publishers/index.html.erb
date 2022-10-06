@@ -1,3 +1,5 @@
+<%= link_to "Add New Publisher", new_publisher_path if policy(Publisher).create? %>
+
 <h1>Publishers</h1>
 <p>Publishers: <%= @publishers.count %> </p>
 
