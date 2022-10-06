@@ -17,6 +17,4 @@
   </p>
 <% end %>
 
-<% if current_user_admin? %>
-  <%= link_to "Edit", edit_author_path %>
-<% end %>
+<%= link_to "Edit", edit_author_path if policy(Author).update?%>

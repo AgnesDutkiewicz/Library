@@ -1,21 +1,24 @@
 class AuthorsController < ApplicationController
-  before_action :require_sign_in, except: [:index, :show]
-  before_action :require_admin, except: [:index, :show]
 
   def index
     @authors = Author.all
+    authorize @authors
   end
 
   def show
     @author = Author.find(params[:id])
+    authorize @author
     @books = @author.books
   end
 
   def new
     @author = Author.new
+    authorize @author
   end
 
   def create
+    @author = Author.new
+    authorize @author
     service_object = Authors::Create.new(current_user, author_params.to_h)
     result = service_object.call
     if service_object.success?
@@ -23,17 +26,18 @@ class AuthorsController < ApplicationController
       redirect_to @author, notice: 'Author successfully created!'
     else
       service_object.error_messages
-      @author = Author.new
       render :new
     end
   end
 
   def edit
     @author = Author.find(params[:id])
+    authorize @author
   end
 
   def update
     @author = Author.find(params[:id])
+    authorize @author
     service_object = Authors::Update.new(current_user, @author, author_params.to_h)
     service_object.call
     if service_object.success?
