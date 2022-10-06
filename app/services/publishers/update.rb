@@ -8,8 +8,6 @@ module Publishers
     end
 
     def call
-      return unless authorized?
-
       contract_call = Publishers::UpdateContract.new.call(params)
       if contract_call.failure?
         errors << contract_call.errors.to_h

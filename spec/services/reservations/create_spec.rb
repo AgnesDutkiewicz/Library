@@ -5,16 +5,6 @@ RSpec.describe Reservations::Create, type: :model do
     let!(:user) { create :user, admin: false }
     let!(:book) { create :book_with_author }
 
-    context 'when user is not signed in' do
-      subject(:object) { Reservations::Create.new(nil, book) }
-
-      it "returns 'user must be present' error message" do
-        object.call
-
-        expect(object.error_messages).to eq [{ user: 'must be present' }]
-      end
-    end
-
     context 'when user is signed in' do
       subject(:object) { Reservations::Create.new(user, book) }
 

@@ -8,8 +8,6 @@ module Reservations
     end
 
     def call
-      return unless authorized?
-
       prepare_params
       contract_call = Reservations::UpdateContract.new.call(params)
       if contract_call.failure?
@@ -23,13 +21,6 @@ module Reservations
 
     attr_reader :params, :user, :reservation, :errors
 
-    def authorized?
-      if user.nil? || user.admin? == false
-        errors << { user: 'must be an admin' }
-      else
-        true
-      end
-    end
 
     def prepare_params
       status_params

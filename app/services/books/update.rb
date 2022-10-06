@@ -8,8 +8,6 @@ module Books
     end
 
     def call
-      return unless authorized?
-
       prepare_params
       contract_call = Books::UpdateContract.new.call(params)
       if contract_call.failure?
