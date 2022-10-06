@@ -12,5 +12,5 @@
   <%= link_to "Books", books_path %>
   <%= link_to "Publishers", publishers_path %>
   <%= link_to "Users", users_path %>
-  <%= link_to "Reservations", reservations_path %>
+  <%= link_to "Reservations", reservations_path if policy(User).index? %>
 </p>
