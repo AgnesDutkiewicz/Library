@@ -8,7 +8,6 @@ module Users
     end
 
     def call
-      # contract_call = Users::UpdateContract.new.call(params)
       contract_call = Users::UpdateContract.new(user: current_user).call(params)
       if contract_call.failure?
         errors << contract_call.errors.to_h
