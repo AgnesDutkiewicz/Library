@@ -35,14 +35,14 @@ RSpec.describe Reservations::Update, type: :model do
       end
     end
 
-    # context "and params pass reservation's status and return date" do
-    #   params = { 'status' => '1', 'return_date(1i)' => '2022', 'return_date(2i)' => '9', 'return_date(3i)' => '29' }
-    #
-    #   it "successfully updates reservation's return_date" do
-    #     Reservations::Update.new(admin, reservation, params).call
-    #
-    #     expect(reservation.return_date).to eq(('29-09-2022').to_datetime)
-    #   end
-    # end
+    context "and params pass reservation's status and return date" do
+      params = { 'status' => '1', 'return_date(1i)' => '2022', 'return_date(2i)' => '9', 'return_date(3i)' => '29' }
+
+      it "successfully updates reservation's return_date" do
+        Reservations::Update.new(admin, reservation, params).call
+
+        expect(reservation.return_date).to eq(('29-09-2022').to_datetime)
+      end
+    end
   end
 end
