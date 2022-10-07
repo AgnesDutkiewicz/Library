@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Reservations::Update, type: :model do
   describe '.call' do
+    let!(:user) { create :user, admin: false }
     let!(:admin) { create :user, admin: true }
     let!(:book) { create :book_with_author }
     let!(:reservation) { create :reservation, book_id: book.id, user_id: user.id }
