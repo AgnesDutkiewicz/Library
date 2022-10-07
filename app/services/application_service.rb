@@ -23,6 +23,6 @@ class ApplicationService
     year = params["#{date_name}(1i)"].to_i
     month = params["#{date_name}(2i)"].to_i
     day = params["#{date_name}(3i)"].to_i
-    DateTime.new(year + month + day) if !year.zero? && !month.zero? && !day.zero?
+    params["#{date_name}"] = DateTime.new(year + month + day) if !year.zero? && !month.zero? && !day.zero?
   end
 end
