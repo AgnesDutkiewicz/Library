@@ -10,5 +10,5 @@ class Book < ApplicationRecord
   validates :category, inclusion: {
     in: CATEGORIES,
     message: 'must be one of available categories'
-  }
+  }, allow_nil: true
 end
