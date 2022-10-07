@@ -18,15 +18,7 @@ class AuthorsController < ApplicationController
   def create
     @author = Author.new
     authorize @author
-    service_object = Authors::Create.new(current_user, author_params.to_h)
-    result = service_object.call
-    if service_object.success?
-      @author = result
-      redirect_to @author, notice: 'Author successfully created!'
-    else
-      service_object.error_messages
-      render :new
-    end
+    prepare_create_response(Authors::Create.new(current_user, author_params.to_h), 'Author successfully created!')
   end
 
   def edit
@@ -37,14 +29,8 @@ class AuthorsController < ApplicationController
   def update
     @author = Author.find(params[:id])
     authorize @author
-    service_object = Authors::Update.new(current_user, @author, author_params.to_h)
-    service_object.call
-    if service_object.success?
-      redirect_to @author, notice: 'Author successfully updated!'
-    else
-      service_object.error_messages
-      render :edit
-    end
+    prepare_update_response(@author, Authors::Update.new(current_user, @author, author_params.to_h),
+                            'Author successfully updated!')
   end
 
   private

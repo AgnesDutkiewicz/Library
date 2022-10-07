@@ -1,6 +1,9 @@
 class Reservation < ApplicationRecord
   belongs_to :book
   belongs_to :user
+  after_create :set_defaults
+
+  DEFAULT_BOOKING_DURATION = 7
 
   enum status: {
     reserved: 0,
@@ -9,11 +12,7 @@ class Reservation < ApplicationRecord
     lost: 3
   }
 
-  def booking_duration
-    7
-  end
-
-  def return_date
-    created_at + booking_duration.days
+  def set_defaults
+    self.return_date ||= self.created_at + DEFAULT_BOOKING_DURATION.days
   end
 end

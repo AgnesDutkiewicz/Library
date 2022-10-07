@@ -6,7 +6,8 @@ RSpec.describe Authors::Update, type: :model do
     let!(:author) { create :author }
 
     context "and author's name is changed to blank" do
-      params = { 'name' => '' }
+      params = { 'name' => '', 'birth_date(1i)' => '2022', 'birth_date(2i)' => '9',
+                 'birth_date(3i)' => '29' }
       subject(:object) { Authors::Update.new(admin, author, params) }
 
       it "returns 'name must be filled' error message" do
@@ -27,7 +28,6 @@ RSpec.describe Authors::Update, type: :model do
     context "and params pass author's name and birth_date" do
       params = { 'name' => 'Agatha Christie', 'birth_date(1i)' => '2022', 'birth_date(2i)' => '9',
                  'birth_date(3i)' => '29' }
-
       it 'successfully updates author' do
         Authors::Update.new(admin, author, params).call
 

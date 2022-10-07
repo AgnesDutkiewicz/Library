@@ -46,4 +46,13 @@ describe Books::UpdateContract do
     it { expect(create_object.call({ publisher_id: [3122] }).errors[:publisher_id].present?).to eq true }
     it { expect(create_object.call({ publisher_id: 3243 }).errors[:publisher_id].present?).to eq false }
   end
+
+  context '#category' do
+    it { expect(create_object.call({ category: '' }).errors[:category].present?).to eq true }
+    it { expect(create_object.call({ category: nil }).errors[:category].present?).to eq true }
+    it { expect(create_object.call({ category: 1234 }).errors[:category].present?).to eq true }
+    it { expect(create_object.call({ category: [] }).errors[:category].present?).to eq true }
+    it { expect(create_object.call({}).errors[:category].present?).to eq false }
+    it { expect(create_object.call({ category: 'Category' }).errors[:category].present?).to eq false }
+  end
 end

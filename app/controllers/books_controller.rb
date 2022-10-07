@@ -1,11 +1,11 @@
 class BooksController < ApplicationController
   def index
-    @books = Book.all
+    @books = policy_scope(Book)
     authorize @books
   end
 
   def show
-    @book = Book.find(params[:id])
+    @book = policy_scope(Book).find(params[:id])
     authorize @book
     @authors = @book.authors
     return unless current_user
@@ -22,15 +22,7 @@ class BooksController < ApplicationController
   def create
     @book = Book.new
     authorize @book
-    service_object = Books::Create.new(current_user, book_params.to_h)
-    result = service_object.call
-    if service_object.success?
-      @book = result
-      redirect_to @book, notice: 'Book successfully created!'
-    else
-      service_object.error_messages
-      render :new
-    end
+    prepare_create_response(Books::Create.new(current_user, book_params.to_h), 'Book successfully created!')
   end
 
   def edit
@@ -41,14 +33,8 @@ class BooksController < ApplicationController
   def update
     @book = Book.find(params[:id])
     authorize @book
-    service_object = Books::Update.new(current_user, @book, book_params.to_h)
-    service_object.call
-    if service_object.success?
-      redirect_to @book, notice: 'Book successfully updated!'
-    else
-      service_object.error_messages
-      render :edit
-    end
+    prepare_update_response(@book, Books::Update.new(current_user, @book, book_params.to_h),
+                            'Book successfully updated!')
   end
 
   def destroy
@@ -61,6 +47,6 @@ class BooksController < ApplicationController
   private
 
   def book_params
-    params.require(:book).permit(:title, :publisher_id, :publication_date, author_ids: [])
+    params.require(:book).permit(:title, :publisher_id, :publication_date, :category, author_ids: [])
   end
 end

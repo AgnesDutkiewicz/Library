@@ -2,7 +2,8 @@ require 'rails_helper'
 require 'dry-validation'
 
 describe Users::UpdateContract do
-  subject(:create_object) { Users::UpdateContract.new }
+  let!(:user) { create :user }
+  subject(:create_object) { Users::UpdateContract.new(user: user) }
 
   context '#name' do
     it { expect(create_object.call({ name: '' }).errors[:name].present?).to eq true }
@@ -32,6 +33,7 @@ describe Users::UpdateContract do
   end
 
   context '#admin' do
+    let!(:user) { create :user, admin: true }
     it { expect(create_object.call({ admin: '' }).errors[:admin].present?).to eq true }
     it { expect(create_object.call({ admin: nil }).errors[:admin].present?).to eq true }
     it { expect(create_object.call({ admin: 777 }).errors[:admin].present?).to eq true }

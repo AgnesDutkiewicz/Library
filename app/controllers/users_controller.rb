@@ -20,11 +20,10 @@ class UsersController < ApplicationController
     service_object = Users::Create.new(user_params.to_h)
     result = service_object.call
     if service_object.success?
-      @user = result
       session[:user_id] = @user.id
-      redirect_to @user, notice: 'Thanks for signing up!'
+      redirect_to result, notice: 'Thanks for signing up!'
     else
-      puts service_object.error_messages
+      service_object.error_messages
       @user = User.new
       render :new
     end
@@ -38,15 +37,8 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     authorize @user
-    service_object = Users::Update.new(current_user, @user, user_params.to_h)
-    service_object.call
-    puts service_object.success?
-    if service_object.success?
-      redirect_to @user, notice: 'Account successfully updated!'
-    else
-      puts service_object.error_messages
-      render :edit
-    end
+    prepare_update_response(@user, Users::Update.new(current_user, @user, user_params.to_h),
+                            'Account successfully updated!')
   end
 
   def destroy

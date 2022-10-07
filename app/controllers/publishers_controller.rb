@@ -17,15 +17,8 @@ class PublishersController < ApplicationController
   def create
     @publisher = Publisher.new
     authorize @publisher
-    service_object = Publishers::Create.new(current_user, publisher_params.to_h)
-    result = service_object.call
-    if service_object.success?
-      @publisher = result
-      redirect_to @publisher, notice: 'Publisher successfully created!'
-    else
-      service_object.error_messages
-      render :new
-    end
+    prepare_create_response(Publishers::Create.new(current_user, publisher_params.to_h),
+                            'Publisher successfully created!')
   end
 
   def edit
@@ -36,14 +29,8 @@ class PublishersController < ApplicationController
   def update
     @publisher = Publisher.find(params[:id])
     authorize @publisher
-    service_object = Publishers::Update.new(current_user, @publisher, publisher_params.to_h)
-    service_object.call
-    if service_object.success?
-      redirect_to @publisher, notice: 'Publisher successfully updated!'
-    else
-      service_object.error_messages
-      render :edit
-    end
+    prepare_update_response(@publisher, Publishers::Update.new(current_user, @publisher, publisher_params.to_h),
+                            'Publisher successfully updated!')
   end
 
   private

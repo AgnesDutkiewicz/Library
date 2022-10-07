@@ -16,7 +16,11 @@ class UserPolicy < ApplicationPolicy
   end
 
   def show?
-    current_user.id == user.id || current_user.admin?
+    if current_user.present?
+      current_user.id == user.id || current_user.admin?
+    else
+      false
+    end
   end
 
   def create?

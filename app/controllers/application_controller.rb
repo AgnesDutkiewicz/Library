@@ -5,6 +5,26 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def prepare_create_response(service_object, notice)
+    result = service_object.call
+    if service_object.success?
+      redirect_to result, notice: notice
+    else
+      service_object.error_messages
+      render :new
+    end
+  end
+
+  def prepare_update_response(object, service_object, notice)
+    service_object.call
+    if service_object.success?
+      redirect_to object, notice: notice
+    else
+      service_object.error_messages
+      render :edit
+    end
+  end
+
   def user_not_authorized
     flash[:alert] = 'You are not authorized to perform this action.'
     redirect_back(fallback_location: root_path)
