@@ -7,7 +7,7 @@ class ReservationsController < ApplicationController
   end
 
   def show
-    @reservation = policy_scope(Reservation)
+    @reservation = policy_scope(Reservation).first
     authorize @reservation
   end
 
@@ -20,7 +20,7 @@ class ReservationsController < ApplicationController
       @reservation = result
       redirect_to user_path(current_user), notice: 'Book reserved!'
     else
-      puts service_object.error_messages
+      service_object.error_messages
       redirect_to @book, notice: "Something went wrong, book isn't reserved!"
     end
   end
@@ -33,15 +33,8 @@ class ReservationsController < ApplicationController
   def update
     @reservation = Reservation.find(params[:id])
     authorize @reservation
-    service_object = Reservations::Update.new(current_user, @reservation, reservation_params.to_h)
-    result = service_object.call
-    if service_object.success?
-      @reservation = result
-      redirect_to book_path(@book), notice: 'Reservation Changed'
-    else
-      puts service_object.error_messages
-      render :edit
-    end
+    prepare_update_response(@reservation, Reservations::Update.new(current_user, @reservation, reservation_params.to_h),
+                            'Reservation Changed')
   end
 
   private
