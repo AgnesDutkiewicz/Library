@@ -1,11 +1,12 @@
 module Users
   class UpdateContract < Contract
+    # option :user
+
     params do
       required(:name).filled(:string)
       required(:email).filled(:string)
       required(:password).filled(:string)
       optional(:admin).value(:bool)
-      # required(:user)
     end
 
     rule(:email) do
