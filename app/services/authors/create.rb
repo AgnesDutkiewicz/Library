@@ -21,16 +21,7 @@ module Authors
     attr_reader :params, :user, :errors
 
     def prepare_params
-      return unless date_params?
-
-      params['birth_date'] = DateTime.new(params['birth_date(1i)'].to_i, params['birth_date(2i)'].to_i,
-                                          params['birth_date(3i)'].to_i)
-    end
-
-    def date_params?
-      if params['birth_date(1i)'].present? && params['birth_date(2i)'].present? && params['birth_date(3i)'].present?
-        true
-      end
+      parse_date(params, 'birth_date')
     end
 
     def create_author

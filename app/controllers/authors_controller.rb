@@ -29,7 +29,8 @@ class AuthorsController < ApplicationController
   def update
     @author = Author.find(params[:id])
     authorize @author
-    prepare_update_response(@author, Authors::Update.new(current_user, @author, author_params.to_h), 'Author successfully updated!')
+    prepare_update_response(@author, Authors::Update.new(current_user, @author, author_params.to_h),
+                            'Author successfully updated!')
   end
 
   private

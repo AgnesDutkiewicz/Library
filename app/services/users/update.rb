@@ -19,6 +19,7 @@ module Users
     private
 
     attr_reader :params, :current_user, :user, :errors
+
     def update_user
       user.update(**params)
     end
