@@ -50,4 +50,12 @@ class ApplicationPolicy
 
     attr_reader :user, :scope
   end
+
+  def user_admin?
+    if user.nil?
+      false
+    elsif user.admin?
+      true
+    end
+  end
 end

@@ -1,43 +1,46 @@
 class ReservationsController < ApplicationController
-  before_action :require_sign_in
-  before_action :require_admin, except: [:create]
   before_action :set_book, except: [:index, :show]
 
   def index
-    @reservations = Reservation.all
+    @reservations = policy_scope(Reservation)
+    authorize @reservations
   end
 
   def show
-    @reservation = Reservation.find(params[:id])
+    @reservation = policy_scope(Reservation)
+    authorize @reservation
   end
 
   def create
-    service_object = Reservations::Create.new(current_user, reservation_params.to_h)
+    @reservation = @book.reservations.new
+    authorize @reservation
+    service_object = Reservations::Create.new(current_user, @book)
     result = service_object.call
     if service_object.success?
       @reservation = result
       redirect_to user_path(current_user), notice: 'Book reserved!'
     else
-      service_object.error_messages
+      puts service_object.error_messages
+      redirect_to @book, notice: "Something went wrong, book isn't reserved!"
     end
   end
 
   def edit
     @reservation = Reservation.find(params[:id])
+    authorize @reservation
   end
 
   def update
-    service_object = Reservations::Update.new(current_user, reservation_params.to_h)
+    @reservation = Reservation.find(params[:id])
+    authorize @reservation
+    service_object = Reservations::Update.new(current_user, @reservation, reservation_params.to_h)
     result = service_object.call
     if service_object.success?
-      @reservation = Reservation.find(params[:id])
-      if @reservation.update(reservation_params)
-        redirect_to book_path(@book), notice: 'Reservation Changed'
-      else
-        render :edit
-      end
+      @reservation = result
+      redirect_to book_path(@book), notice: 'Reservation Changed'
     else
-      puts result.errors.to_h
+      puts service_object.error_messages
+      render :edit
     end
   end
 
@@ -48,6 +51,6 @@ class ReservationsController < ApplicationController
   end
 
   def reservation_params
-    params.require(:reservation).permit(:book_id, :user_id, :return_date, :status)
+    params.require(:reservation).permit(:status, :return_date)
   end
 end

@@ -1,3 +1,5 @@
+<%= link_to "Add New Author", new_author_path if policy(Author).create? %>
+
 <h1>Authors</h1>
 <p>Authors: <%= @authors.count %> </p>
 

@@ -30,9 +30,7 @@
   <% end %>
 <% end %>
 
-<% if current_user_admin? %>
   <p>
-    <%= link_to "Edit Book", edit_book_path(@book) %>
-    <%= link_to "Delete Book", book_path(@book), method: :delete, data: { confirm: 'Are you sure?' } %>
+    <%= link_to "Edit Book", edit_book_path(@book) if policy(Book).update? %>
+    <%= link_to "Delete Book", book_path(@book), method: :delete, data: { confirm: 'Are you sure?' } if policy(Book).destroy?%>
   </p>
-<% end %>

@@ -1,3 +1,5 @@
+<%= link_to "Add New Book", new_book_path if policy(Book).create? %>
+
 <h1>Books</h1>
 <p>Available books: <%= @books.length %> </p>
 
