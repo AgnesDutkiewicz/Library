@@ -17,9 +17,16 @@
   </p>
 
   <p>
+    <%= f.label :category %>
+    <% Book::CATEGORIES.each do |category| %>
+      <%= f.radio_button :category, category %> <%= category %>
+    <% end %>
+  </p>
+
+  <p>
     <%= f.label :publication_date %><br/>
     <%= f.date_select :publication_date %>
   </p>
 
-<%= f.submit %>
+  <%= f.submit %>
 <% end %>

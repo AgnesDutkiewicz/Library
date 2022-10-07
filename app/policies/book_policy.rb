@@ -1,9 +1,13 @@
 class BookPolicy < ApplicationPolicy
   class Scope < Scope
     # NOTE: Be explicit about which records you allow access to!
-    # def resolve
-    #   scope.all
-    # end
+    def resolve
+      if !user.present? || !user.admin?
+        scope.where.not(category: '18+')
+      else
+        scope.all
+      end
+    end
   end
 
   def index?

@@ -16,6 +16,10 @@
     <%= @book.publication_date.strftime('%d-%m-%Y') %>, (<%= time_ago_in_words(@book.publication_date) %> ago)
   <% end %>
 </p>
+<p>
+  <%= "Book category: #{@book.category}" if @book.category.present? %>
+</p>
+
 
 <% if current_user %>
   <% if @current_reservation %>

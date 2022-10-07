@@ -1,11 +1,11 @@
 class BooksController < ApplicationController
   def index
-    @books = Book.all
+    @books = policy_scope(Book)
     authorize @books
   end
 
   def show
-    @book = Book.find(params[:id])
+    @book = policy_scope(Book).find(params[:id])
     authorize @book
     @authors = @book.authors
     return unless current_user
@@ -47,6 +47,6 @@ class BooksController < ApplicationController
   private
 
   def book_params
-    params.require(:book).permit(:title, :publisher_id, :publication_date, author_ids: [])
+    params.require(:book).permit(:title, :publisher_id, :publication_date, :category, author_ids: [])
   end
 end

@@ -5,6 +5,7 @@ module Books
       optional(:publication_date).filled(:date_time)
       required(:author_ids).filled(:array).array(type?: Integer)
       required(:publisher_id).value(:integer)
+      optional(:category).filled(:string)
     end
   end
 end
