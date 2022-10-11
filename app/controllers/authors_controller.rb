@@ -18,7 +18,15 @@ class AuthorsController < ApplicationController
   def create
     @author = Author.new
     authorize @author
-    prepare_create_response(Authors::Create.new(current_user, author_params.to_h), 'Author successfully created!')
+    # prepare_create_response(Authors::Create.new(author_params.to_h), 'Author successfully created!')
+
+    Authors::Create.new(author_params.to_h).call do |on|
+      on.success                      { |author| redirect_to author }
+      on.failure(:prepare_params)     { |errors| @errors = errors }
+      on.failure(:contract_call)      { |errors| @errors = errors }
+      on.failure(:create_author)      { |errors| @errors = errors }
+      on.failure                      { render :new }
+    end
   end
 
   def edit

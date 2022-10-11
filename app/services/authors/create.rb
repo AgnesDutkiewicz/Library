@@ -1,31 +1,40 @@
+require 'dry/monads'
+require 'dry/matcher/result_matcher'
+
 module Authors
   class Create < ApplicationService
-    def initialize(user, params)
-      @user = user
+    include Dry::Monads[:result, :do]
+
+    def initialize(params)
       @params = params
       @errors = []
     end
 
     def call
       prepare_params
-      contract_call = Authors::UpdateContract.new.call(params)
-      if contract_call.failure?
-        errors << contract_call.errors.to_h
-      else
-        create_author
-      end
+      yield contract_call
+      yield create_author
     end
 
     private
 
-    attr_reader :params, :user, :errors
+    attr_reader :params, :errors
 
     def prepare_params
       parse_date(params, 'birth_date')
     end
 
+    def contract_call
+      contract_call = Authors::UpdateContract.new.call(params)
+
+      return Failure(contract_call.errors.to_h) if contract_call.failure?
+
+      Success()
+    end
+
     def create_author
-      Author.create(**params)
+      author = Author.create(**params)
+      Success(author)
     end
   end
 end
