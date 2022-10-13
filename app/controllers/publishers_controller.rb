@@ -33,6 +33,13 @@ class PublishersController < ApplicationController
                             'Publisher successfully updated!')
   end
 
+  def destroy
+    @publisher = Publisher.find(params[:id])
+    authorize @publisher
+    @publisher.destroy
+    redirect_to publishers_url, alert: 'Publisher successfully deleted!'
+  end
+
   private
 
   def publisher_params

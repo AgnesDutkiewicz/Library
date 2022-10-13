@@ -20,7 +20,7 @@ describe PublisherPolicy do
     end
   end
 
-  permissions :create?, :new?, :update?, :edit? do
+  permissions :create?, :new?, :update?, :edit?, :destroy? do
     it 'denies access if user is not signed in' do
       expect(subject).not_to permit
     end

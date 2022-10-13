@@ -1,9 +1,10 @@
 require 'dry/monads'
-require 'dry/matcher/result_matcher'
+# require 'dry/matcher/result_matcher'
 
 module Authors
   class Create < ApplicationService
     include Dry::Monads[:result, :do]
+    # include Dry::Matcher.for(:call, :contract_call, :create_author, with: Dry::Matcher::ResultMatcher)
 
     def initialize(params)
       @params = params
@@ -13,7 +14,9 @@ module Authors
     def call
       prepare_params
       yield contract_call
-      yield create_author
+      author = yield create_author
+
+      Success(author)
     end
 
     private

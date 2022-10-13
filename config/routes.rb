@@ -10,6 +10,6 @@ Rails.application.routes.draw do
     resources :reservations
   end
   resources :reservations, only: [:index, :show]
-  resources :publishers, except: [:destroy]
-  resources :authors, except: [:destroy]
+  resources :publishers
+  resources :authors
 end

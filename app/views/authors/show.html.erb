@@ -18,3 +18,4 @@
 <% end %>
 
 <%= link_to "Edit", edit_author_path if policy(Author).update?%>
+<%= link_to "Delete Author", author_path(@author), method: :delete, data: { confirm: 'Are you sure?' } if policy(Author).destroy?%>

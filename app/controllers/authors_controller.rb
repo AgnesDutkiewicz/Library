@@ -41,6 +41,13 @@ class AuthorsController < ApplicationController
                             'Author successfully updated!')
   end
 
+  def destroy
+    @author = Author.find(params[:id])
+    authorize @author
+    @author.destroy
+    redirect_to authors_url, alert: 'Author successfully deleted!'
+  end
+
   private
 
   def author_params
