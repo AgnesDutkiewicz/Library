@@ -30,10 +30,10 @@ class AuthorsController < ApplicationController
     when Success
       redirect_to Author.last, notice: 'Author successfully created!'
     when Failure
-      flash.now[:error] = "Operation failed because: #{result.failure}"
+      flash.now[:error] = render_error_message(result.failure)
       render :new
     else
-      flash.now[:error] = 'Oops! Something went wrong.'
+      flash.now[:error] = "Oops! Author couldn't be created."
     end
   end
 
@@ -57,6 +57,11 @@ class AuthorsController < ApplicationController
   end
 
   private
+
+  def render_error_message(result)
+    array = result.flatten.map { |k, v| "#{k} #{v}" }
+    "#{array[0]} #{array[1]}"
+  end
 
   def author_params
     params.require(:author).permit(:name, :birth_date)
