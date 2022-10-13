@@ -60,7 +60,7 @@ class AuthorsController < ApplicationController
 
   def render_error_message(result)
     array = result.flatten.map { |k, v| "#{k} #{v}" }
-    "#{array[0]} #{array[1]}"
+    array.join(' ')
   end
 
   def author_params
