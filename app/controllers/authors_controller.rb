@@ -1,4 +1,8 @@
+require 'dry/monads'
+
 class AuthorsController < ApplicationController
+  include Dry::Monads[:result]
+
   def index
     @authors = Author.all
     authorize @authors
@@ -20,12 +24,16 @@ class AuthorsController < ApplicationController
     authorize @author
     # prepare_create_response(Authors::Create.new(author_params.to_h), 'Author successfully created!')
 
-    Authors::Create.new(author_params.to_h).call do |on|
-      on.success                      { |author| redirect_to author }
-      on.failure(:prepare_params)     { |errors| @errors = errors }
-      on.failure(:contract_call)      { |errors| @errors = errors }
-      on.failure(:create_author)      { |errors| @errors = errors }
-      on.failure                      { render :new }
+    result = Authors::Create.new(author_params.to_h).call
+
+    case result
+    when Success
+      redirect_to Author.last, notice: 'Author successfully created!'
+    when Failure
+      flash.now[:error] = "Operation failed because: #{result.failure}"
+      render :new
+    else
+      flash.now[:error] = 'Oops! Something went wrong.'
     end
   end
 
