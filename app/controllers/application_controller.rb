@@ -1,19 +1,33 @@
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
+  include Dry::Monads[:result, :do]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   private
 
-  def prepare_create_response(service_object, notice)
+  def prepare_create_response(object_name, service_object, notice)
     result = service_object.call
-    if service_object.success?
-      redirect_to result, notice: notice
-    else
-      service_object.error_messages
+    case result
+    when Success
+    redirect_to (yield result), notice: notice
+    when Failure
+      flash.now[:error] = render_error_message(result.failure)
       render :new
+    else
+      flash.now[:error] = "Oops! #{object_name} couldn't be created."
     end
   end
+
+  # def prepare_create_response(service_object, notice)
+  #     result = service_object.call
+  #     if service_object.success?
+  #       redirect_to result, notice: notice
+  #     else
+  #       service_object.error_messages
+  #       render :new
+  #     end
+  #   end
 
   def prepare_update_response(object, service_object, notice)
     service_object.call
@@ -23,6 +37,10 @@ class ApplicationController < ActionController::Base
       service_object.error_messages
       render :edit
     end
+  end
+
+  def render_error_message(result)
+    result.flatten.map { |k, v| ("#{k} #{v}") }.join(' ')
   end
 
   def user_not_authorized

@@ -1,5 +1,3 @@
-require 'dry/monads'
-
 module Authors
   class Create < ApplicationService
     include Dry::Monads[:result, :do]

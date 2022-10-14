@@ -1,7 +1,4 @@
-require 'dry/monads'
-
 class AuthorsController < ApplicationController
-  include Dry::Monads[:result]
 
   def index
     @authors = Author.all
@@ -22,19 +19,7 @@ class AuthorsController < ApplicationController
   def create
     @author = Author.new
     authorize @author
-    # prepare_create_response(Authors::Create.new(author_params.to_h), 'Author successfully created!')
-
-    result = Authors::Create.new(author_params.to_h).call
-
-    case result
-    when Success
-      redirect_to Author.last, notice: 'Author successfully created!'
-    when Failure
-      flash.now[:error] = render_error_message(result.failure)
-      render :new
-    else
-      flash.now[:error] = "Oops! Author couldn't be created."
-    end
+    prepare_create_response('Author', Authors::Create.new(author_params.to_h), 'Author successfully created!')
   end
 
   def edit
@@ -57,10 +42,6 @@ class AuthorsController < ApplicationController
   end
 
   private
-
-  def render_error_message(result)
-    result.flatten.map { |k, v| ("#{k} #{v}") }.join(' ')
-  end
 
   def author_params
     params.require(:author).permit(:name, :birth_date)
