@@ -2,22 +2,24 @@ require 'rails_helper'
 
 RSpec.describe Publishers::Create, type: :model do
   describe '.call' do
-    let!(:admin) { create :user, admin: true }
 
     context "and params doesn't pass publisher's name" do
       params = { 'origin' => 'Publisher country' }
-      subject(:object) { Publishers::Create.new(admin, params) }
-
+      subject(:object) { Publishers::Create.new(params).call }
       it "returns 'name is missing' error message" do
-        expect(object.call).to eq [{ name: ['is missing'] }]
+
+        expect(object).not_to be_success
+        expect(object.failure).to eq({ :name => ["is missing"] })
       end
     end
 
     context "and params doesn't pass publisher's origin country" do
       params = { 'name' => 'Publisher name' }
+      subject(:object) { Publishers::Create.new(params).call }
       it 'successfully creates publisher' do
-        publisher = Publishers::Create.new(admin, params).call
+        publisher = object.value!
 
+        expect(object).to be_success
         expect(publisher.name).to eq('Publisher name')
         expect(publisher.origin).to eq(nil)
       end
@@ -25,10 +27,11 @@ RSpec.describe Publishers::Create, type: :model do
 
     context "and params pass publisher's name and birth_date" do
       params = { 'name' => 'Publisher name', 'origin' => 'Publisher country' }
-
+      subject(:object) { Publishers::Create.new(params).call }
       it 'successfully creates publisher' do
-        publisher = Publishers::Create.new(admin, params).call
+        publisher = object.value!
 
+        expect(object).to be_success
         expect(publisher.name).to eq('Publisher name')
         expect(publisher.origin).to eq('Publisher country')
       end

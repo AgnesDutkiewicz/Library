@@ -17,7 +17,7 @@ class PublishersController < ApplicationController
   def create
     @publisher = Publisher.new
     authorize @publisher
-    prepare_create_response(Publishers::Create.new(current_user, publisher_params.to_h),
+    prepare_create_response('Publisher', Publishers::Create.new(publisher_params.to_h),
                             'Publisher successfully created!')
   end
 
