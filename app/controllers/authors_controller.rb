@@ -19,7 +19,7 @@ class AuthorsController < ApplicationController
   def create
     @author = Author.new
     authorize @author
-    prepare_create_response('Author', Authors::Create.new(author_params.to_h), 'Author successfully created!')
+    prepare_create_response(Authors::Create.new(author_params.to_h), 'Author successfully created!')
   end
 
   def edit

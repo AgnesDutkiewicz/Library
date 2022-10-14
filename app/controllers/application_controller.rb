@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def prepare_create_response(object_name, service_object, notice)
+  def prepare_create_response(service_object, notice)
     result = service_object.call
     case result
     when Success
@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
       flash.now[:error] = render_error_message(result.failure)
       render :new
     else
-      flash.now[:error] = "Oops! #{object_name} couldn't be created."
+      flash.now[:error] = "#{result.failure}"
     end
   end
 

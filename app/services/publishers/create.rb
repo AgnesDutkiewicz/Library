@@ -32,7 +32,7 @@ module Publishers
       if publisher.save
         Success(publisher)
       else
-        Failure(:publisher_save_error)
+        Failure(publisher.error.full_messages)
       end
     end
   end

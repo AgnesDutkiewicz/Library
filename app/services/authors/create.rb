@@ -37,7 +37,7 @@ module Authors
       if author.save
         Success(author)
       else
-        Failure(:author_save_error)
+        Failure(author.error.full_messages)
       end
     end
   end
