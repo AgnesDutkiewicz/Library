@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
   end
 
   def render_error_message(result)
-    result.flatten.map { |field_name, errors| "#{field_name} #{errors}" }.join(' ')
+    result.flatten.map { |data_name, errors| "#{data_name} #{errors}" }.join(' ')
   end
 
   def user_not_authorized
