@@ -17,4 +17,5 @@ class PublisherPolicy < ApplicationPolicy
   end
 
   alias update? create?
+  alias destroy? create?
 end

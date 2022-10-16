@@ -17,4 +17,5 @@ class AuthorPolicy < ApplicationPolicy
   end
 
   alias update? create?
+  alias destroy? create?
 end

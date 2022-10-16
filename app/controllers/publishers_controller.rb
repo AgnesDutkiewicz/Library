@@ -17,8 +17,7 @@ class PublishersController < ApplicationController
   def create
     @publisher = Publisher.new
     authorize @publisher
-    prepare_create_response(Publishers::Create.new(current_user, publisher_params.to_h),
-                            'Publisher successfully created!')
+    prepare_create_response(Publishers::Create.new(publisher_params.to_h),'Publisher successfully created!')
   end
 
   def edit
@@ -31,6 +30,13 @@ class PublishersController < ApplicationController
     authorize @publisher
     prepare_update_response(@publisher, Publishers::Update.new(current_user, @publisher, publisher_params.to_h),
                             'Publisher successfully updated!')
+  end
+
+  def destroy
+    @publisher = Publisher.find(params[:id])
+    authorize @publisher
+    @publisher.destroy
+    redirect_to publishers_url, alert: 'Publisher successfully deleted!'
   end
 
   private

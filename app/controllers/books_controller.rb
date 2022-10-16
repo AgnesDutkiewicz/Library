@@ -22,7 +22,7 @@ class BooksController < ApplicationController
   def create
     @book = Book.new
     authorize @book
-    prepare_create_response(Books::Create.new(current_user, book_params.to_h), 'Book successfully created!')
+    prepare_create_response(Books::Create.new(book_params.to_h), 'Book successfully created!')
   end
 
   def edit

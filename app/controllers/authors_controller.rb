@@ -1,4 +1,5 @@
 class AuthorsController < ApplicationController
+
   def index
     @authors = Author.all
     authorize @authors
@@ -18,7 +19,7 @@ class AuthorsController < ApplicationController
   def create
     @author = Author.new
     authorize @author
-    prepare_create_response(Authors::Create.new(current_user, author_params.to_h), 'Author successfully created!')
+    prepare_create_response(Authors::Create.new(author_params.to_h), 'Author successfully created!')
   end
 
   def edit
@@ -31,6 +32,13 @@ class AuthorsController < ApplicationController
     authorize @author
     prepare_update_response(@author, Authors::Update.new(current_user, @author, author_params.to_h),
                             'Author successfully updated!')
+  end
+
+  def destroy
+    @author = Author.find(params[:id])
+    authorize @author
+    @author.destroy
+    redirect_to authors_url, alert: 'Author successfully deleted!'
   end
 
   private
