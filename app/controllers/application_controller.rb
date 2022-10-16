@@ -10,24 +10,18 @@ class ApplicationController < ActionController::Base
     result = service_object.call
     case result
     when Success
-    redirect_to (yield result), notice: notice
+      redirect_to returned_object(result), notice: notice
     when Failure
       flash.now[:error] = render_error_message(result.failure)
       render :new
     else
-      flash.now[:error] = "#{result.failure}"
+      flash.now[:error] = result.failure.to_s
     end
   end
 
-  # def prepare_create_response(service_object, notice)
-  #     result = service_object.call
-  #     if service_object.success?
-  #       redirect_to result, notice: notice
-  #     else
-  #       service_object.error_messages
-  #       render :new
-  #     end
-  #   end
+  def returned_object(result)
+    yield result
+  end
 
   def prepare_update_response(object, service_object, notice)
     service_object.call
@@ -40,7 +34,7 @@ class ApplicationController < ActionController::Base
   end
 
   def render_error_message(result)
-    result.flatten.map { |k, v| ("#{k} #{v}") }.join(' ')
+    result.flatten.map { |field_name, errors| "#{field_name} #{errors}" }.join(' ')
   end
 
   def user_not_authorized

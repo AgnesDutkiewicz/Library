@@ -39,7 +39,7 @@ module Books
       if book.save
         Success(book)
       else
-        Failure(book.error.full_messages)
+        Failure(book.errors.full_messages)
       end
     end
   end
